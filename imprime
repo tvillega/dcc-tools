@@ -47,7 +47,6 @@ do
             duplex="y"
             ;;
         *)
-            printf "Variable desconocida %s" $1
             ;;
     esac
 done
@@ -57,6 +56,15 @@ done
 #echo $single
 #echo $duplex
 #exit
+
+##
+## Search for file
+##
+
+if [[ ! -f ${document} ]] ; then
+    printf "No encontré el archivo ${document}, revisa la ruta otorgada o el directorio en el que estás\n"
+    exit
+fi
 
 ##
 ## Check the file
