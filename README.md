@@ -53,6 +53,12 @@ Clonar este repositorio:
 $ git clone https://github.com/tvillega/dcc-tools.git
 ```
 
+Para actualizar las herramientas:
+```
+$ cd ~/.local/src/dcc-tools
+$ git pull
+```
+
 Instalar herramientas deseadas (e.g. `imprime`):
 ```
 $ ln -s ${HOME}/.local/src/dcc-tools/imprime ${HOME}/.local/bin/imprime
