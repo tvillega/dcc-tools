@@ -1,0 +1,102 @@
+#!/usr/bin/env bash
+
+printer=""
+document=""
+single=""
+duplex=""
+
+function myhelp() {
+
+printf -- "Script para imprimir en el dcc\n"
+printf -- "  --help         | -h       - Print this help message\n"
+printf -- "  --lorenzo      | -lp      - Usar impresora del pasillo Lab Lorenzo\n"
+printf -- "  --toqui        | -tp      - Usar impresora en Lab Toqui\n"
+printf -- "  --file    FILE | -f FILE  - Archivo a imprimir, DEBE ser pdf\n"
+printf -- "                              se incluye la conversión a PostScript\n"
+printf -- "  --single       | -s       - Imprimir por una sola cara de la hoja\n"
+printf -- "  --duplex       | -d       - Imprimir por ambas caras de la hoja\n"
+
+}
+
+for arg in "$@"
+do
+    case $arg in
+        --help|-h)
+            myhelp
+            exit
+            ;;
+        --toqui|-pt)
+            shift
+            printer="hp"
+            ;;
+        --lorenzo|-pl)
+            shift
+            printer="hp-335"
+            ;;
+        --file|-f)
+            shift
+            document=$1
+            shift
+            ;;
+        --single|-s)
+            shift
+            single="y"
+            ;;
+        --duplex|-d)
+            shift
+            duplex="y"
+            ;;
+        *)
+            printf "Variable desconocida %s" $1
+            ;;
+    esac
+done
+
+#echo $printer
+#echo $document
+#echo $single
+#echo $duplex
+#exit
+
+##
+## Check the file
+##
+
+document_ext=${document##*.}
+if [[ $document_ext != "pdf" ]] ; then
+    printf "Sólo puedo imprimir documentos en pdf\n"
+    exit
+
+# If everything ok, convert to PostScript
+else
+    document_out="${document%.*}.ps"
+    pdf2ps "$document" "$document_out"
+fi
+
+# TODO: Add check with command > file $document | awk ... (must equal "PDF document")
+
+##
+## Check the printer
+##
+
+if [[ -z $printer ]] ; then
+    printf "Te faltó indicar dónde quieres imprimir\n"
+    exit
+fi
+
+##
+## Check printing mode
+##
+
+if [[ -n $single ]] ; then
+    lpr -P $printer "$document_out"
+    exit
+
+elif [[ -n $duplex ]] ; then
+    duplex "$document_out" | lpr -P $printer
+    exit
+
+else
+    printf "Te faltó indicar si imprimir a una o doble cara\n"
+    exit
+fi
