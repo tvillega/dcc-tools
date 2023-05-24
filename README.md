@@ -4,18 +4,19 @@ Repositorio con scripts para manejar más facilmente el servidor del departament
 
 ## Instalación
 
-Ingresar al servidor anakena:
+1. Ingresar al servidor anakena:
+> Reemplazar *user* con el designado por el departamento.
 ```
 $ ssh user@anakena.dcc.uchile.cl
 ```
-Reemplazar *user* con el designado por el departamento
 
-Crear directorio para los ejecutables:
+2. Crear directorio para los ejecutables:
 ```
 $ mkdir -p ~/.local/bin
 ```
 
-Editar el archivo `.bashrc` para añadir la nueva ruta:
+3. Editar el archivo `.bashrc` para añadir la nueva ruta:
+> Así el comando estará disponible en los Lab Lorenzo|Toqui.
 ```
 $ nano ~/.bashrc
 ---
@@ -25,20 +26,21 @@ if [ -d "$HOME/.local/bin" ] ; then
 fi
 ```
 
-Editar el archivo `.profile` para apuntar al anterior:
+4. Editar el archivo `.profile` para apuntar al anterior:
+> Así el comando estará disponible al hacer ssh.
 ```
 $ nano ~/.profile
 ---
 # No borrar contenido anterior, añadir esto al final
-. .bashrc
+source .bashrc
 ```
 
-Aplicar los cambios instantáneamente:
+5. Aplicar los cambios instantáneamente:
 ```
 $ source ~/.bashrc
 ```
 
-Crear directorio para *source code*:
+6. Crear directorio para *source code*:
 ```
 $ mkdir -p ~/.local/src
 ```
@@ -48,20 +50,22 @@ Ir al directorio de *source code*:
 $ cd ~/.local/src
 ```
 
-Clonar este repositorio:
+7. Clonar este repositorio:
 ```
 $ git clone https://github.com/tvillega/dcc-tools.git
 ```
+
+8. Instalar herramientas deseadas (e.g. `imprime`):
+```
+$ ln -s ${HOME}/.local/src/dcc-tools/imprime ${HOME}/.local/bin/imprime
+```
+
+## Actualización
 
 Para actualizar las herramientas:
 ```
 $ cd ~/.local/src/dcc-tools
 $ git pull
-```
-
-Instalar herramientas deseadas (e.g. `imprime`):
-```
-$ ln -s ${HOME}/.local/src/dcc-tools/imprime ${HOME}/.local/bin/imprime
 ```
 
 # Herramientas disponibles
