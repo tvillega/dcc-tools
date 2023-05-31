@@ -45,17 +45,17 @@ $ source ~/.bashrc
 $ mkdir -p ~/.local/src
 ```
 
-Ir al directorio de *source code*:
+7. Ir al directorio de *source code*:
 ```
 $ cd ~/.local/src
 ```
 
-7. Clonar este repositorio:
+8. Clonar este repositorio:
 ```
 $ git clone https://github.com/tvillega/dcc-tools.git
 ```
 
-8. Instalar herramientas deseadas (e.g. `imprime`):
+9. Instalar herramientas deseadas (e.g. `imprime`):
 ```
 $ ln -s ${HOME}/.local/src/dcc-tools/imprime ${HOME}/.local/bin/imprime
 ```
