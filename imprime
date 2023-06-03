@@ -5,6 +5,7 @@ document=""
 single=""
 duplex=""
 not_pdf=""
+landscape=""
 
 function myhelp() {
 
@@ -25,6 +26,7 @@ function myhelp_extra() {
 myhelp
 printf -- "\nOpciones avanzadas\n"
 printf -- "  --not-pdf      |          - Imprimir archivo que no es pdf\n"
+printf -- "  --landscape    | -l       - Voltear la hoja por el lado corto\n"
 
 }
 
@@ -64,6 +66,10 @@ do
             shift
             not_pdf="y"
             ;;
+        --landscape|-l)
+            shift
+            landscape="y"
+            ;;
         *)
             ;;
     esac
@@ -91,7 +97,7 @@ if [[ $(file --mime-type -b "${document}") != "application/pdf" ]] ; then
 
     # Show error and quit
     else
-        printf "El archivo %s no es un pdf" "${document}"
+        printf "El archivo %s no es un pdf\n" "${document}"
         exit
     fi
 
@@ -119,7 +125,7 @@ if [[ -n $single ]] ; then
     exit
 
 elif [[ -n $duplex ]] ; then
-    duplex "$document_out" | lpr -P $printer
+    duplex "$landscape" "$document_out" | lpr -P $printer
     exit
 
 else
