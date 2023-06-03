@@ -4,11 +4,13 @@ printer=""
 document=""
 single=""
 duplex=""
+not_pdf=""
 
 function myhelp() {
 
 printf -- "Script para imprimir en el dcc\n"
 printf -- "  --help         | -h       - Print this help message\n"
+printf -- "  --more-help    | -hh      - Print extended help message\n"
 printf -- "  --lorenzo      | -lp      - Usar impresora del pasillo Lab Lorenzo\n"
 printf -- "  --toqui        | -tp      - Usar impresora en Lab Toqui\n"
 printf -- "  --file    FILE | -f FILE  - Archivo a imprimir, DEBE ser pdf\n"
@@ -18,11 +20,24 @@ printf -- "  --duplex       | -d       - Imprimir por ambas caras de la hoja\n"
 
 }
 
+function myhelp_extra() {
+
+myhelp
+printf -- "\nOpciones avanzadas\n"
+printf -- "  --not-pdf      |          - Imprimir archivo que no es pdf\n"
+
+
+}
+
 for arg in "$@"
 do
     case $arg in
         --help|-h)
             myhelp
+            exit
+            ;;
+        --more-help|-hh)
+            myhelp_extra
             exit
             ;;
         --toqui|-pt)
@@ -46,6 +61,10 @@ do
             shift
             duplex="y"
             ;;
+        --not-pdf)
+            shift
+            not_pdf="y"
+            ;;
         *)
             ;;
     esac
@@ -62,7 +81,7 @@ done
 ##
 
 if [[ ! -f ${document} ]] ; then
-    printf "No encontré el archivo ${document}, revisa la ruta otorgada o el directorio en el que estás\n"
+    printf "No encontré el archivo %s, revisa la ruta otorgada o el directorio en el que estás\n" "${document}"
     exit
 fi
 
@@ -70,12 +89,20 @@ fi
 ## Check the file
 ##
 
-document_ext=${document##*.}
-if [[ $document_ext != "pdf" ]] ; then
-    printf "Sólo puedo imprimir documentos en pdf\n"
-    exit
+# Check extension of file
+if [[ $(file --mime-type -b "${document}") != "application/pdf" ]]; then
 
-# If everything ok, convert to PostScript
+    # Override check and print file as-is
+    if [[ -n $not_pdf ]] ; then
+        document_out=$document
+
+    # Show error and quit
+    else
+        printf "El archivo %s no es un pdf" "${document}
+        exit
+    fi
+
+# Convert to PostScript if pdf
 else
     document_out="${document%.*}.ps"
     pdf2ps "$document" "$document_out"
