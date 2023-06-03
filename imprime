@@ -26,7 +26,6 @@ myhelp
 printf -- "\nOpciones avanzadas\n"
 printf -- "  --not-pdf      |          - Imprimir archivo que no es pdf\n"
 
-
 }
 
 for arg in "$@"
@@ -70,12 +69,6 @@ do
     esac
 done
 
-#echo $printer
-#echo $document
-#echo $single
-#echo $duplex
-#exit
-
 ##
 ## Search for file
 ##
@@ -89,8 +82,8 @@ fi
 ## Check the file
 ##
 
-# Check extension of file
-if [[ $(file --mime-type -b "${document}") != "application/pdf" ]]; then
+# Check type of file (default is pdf)
+if [[ $(file --mime-type -b "${document}") != "application/pdf" ]] ; then
 
     # Override check and print file as-is
     if [[ -n $not_pdf ]] ; then
@@ -98,7 +91,7 @@ if [[ $(file --mime-type -b "${document}") != "application/pdf" ]]; then
 
     # Show error and quit
     else
-        printf "El archivo %s no es un pdf" "${document}
+        printf "El archivo %s no es un pdf" "${document}"
         exit
     fi
 
@@ -107,8 +100,6 @@ else
     document_out="${document%.*}.ps"
     pdf2ps "$document" "$document_out"
 fi
-
-# TODO: Add check with command > file $document | awk ... (must equal "PDF document")
 
 ##
 ## Check the printer
