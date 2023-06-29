@@ -125,7 +125,7 @@ if [[ -n $single ]] ; then
     exit
 
 elif [[ -n $duplex ]] ; then
-    duplex "$landscape" "$document_out" | lpr -P $printer
+    duplex $landscape "$document_out" | lpr -P $printer
     exit
 
 else
