@@ -17,7 +17,7 @@ function install_zola() {
     zola_tag=${zola_latest_url##*/}
 
     # create cache
-    mkdir ${src_dir/cache}
+    mkdir ${src_dir}/cache
 
     # download binary file
     curl -s -L ${gh_url}/releases/download/${zlt}/zola-${zola_tag}-x86_64-${distro}.tar.gz --output ${src_dir}/cache/zola.tar.gz
