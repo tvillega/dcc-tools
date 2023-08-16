@@ -14,13 +14,13 @@ function install_zola() {
     zola_url=$(curl -w "%{url_effective}\n" -I -L -s -S ${gh_url}/releases/latest -o /dev/null)
 
     # get latest tag
-    zola_tag=${zola_latest_url##*/}
+    zola_tag=${zola_url##*/}
 
     # create cache
     mkdir ${src_dir}/cache
 
     # download binary file
-    curl -s -L ${gh_url}/releases/download/${zlt}/zola-${zola_tag}-x86_64-${distro}.tar.gz --output ${src_dir}/cache/zola.tar.gz
+    curl -s -L ${gh_url}/releases/download/${zola_tag}/zola-${zola_tag}-x86_64-${distro}.tar.gz --output ${src_dir}/cache/zola.tar.gz
 
     # extract binary file to exec path
     tar -xf ${src_dir}/cache/zola.tar.gz -C ${bin_dir}
