@@ -44,8 +44,8 @@ function deploy_webpage() {
     # archive old website
     if [[ -d ${HOME}/public_www ]] ; then
         now=$(date +%Y-%m-%d-%H-%M)
-        mv ${HOME}/public_www ${HOME}/public_www.${now}
-        mkdir ${HOME}/public_www
+        mkdir -p ${HOME}/public_www.old
+        mv ${HOME}/public_www ${HOME}/public_www.old/${now}
     fi
 
     # deploy website
