@@ -11,9 +11,10 @@ BIN_DIR="$HOME/.local/bin"
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
 
-function install_tools() {
+function edit_tools() {
 
-    local tool=$1
+    local mode=$1
+    local tool=$2
 
     if [[ -z $tool ]] ; then
         printf -- "ERROR: No tool selected\n" 1>&2
@@ -27,7 +28,12 @@ function install_tools() {
         exit
     fi
 
-    ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
+    if [[ $mode == "install" ]] ; then
+        ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
+
+    elif [[ $mode == "remove" ]] ; then
+        rm $BIN_DIR/$tool
+    fi
 
 }
 
@@ -56,7 +62,12 @@ do
             ;;
         install)
             shift
-            install_tools $1
+            edit_tools "install" $1
+            exit
+            ;;
+        remove)
+            shift
+            edit_tools "remove" $1
             exit
             ;;
         *)
