@@ -20,11 +20,11 @@ if [[ ! -f "$HOME/.profile" ]] ; then
 fi
 
 ## Search for the string on the file
-grep "source \$HOME/\.bashrc" .profile > /dev/null 2>&1
+grep "source \$HOME/.bashrc" .profile > /dev/null 2>&1
 
 ## If not found (exit code 1), append it
 if [[ $? -eq 1 ]] ; then # Not found
-    printf -- "source \$HOME/\.bashrc" >> $HOME/.profile
+    echo "source \$HOME/.bashrc" >> $HOME/.profile
 fi
 
 # Create src directory
