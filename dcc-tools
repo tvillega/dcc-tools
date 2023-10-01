@@ -46,7 +46,7 @@ function destroy_tools() {
 
     tput cup "$((height/2))" "$((width/2))"
 
-    printf -- "\e[3mI Used the Stones to Destroy the Stones\e[0m"
+    printf -- "\e[3mI Used the Stones to Destroy the Stones\e[0m\n"
 
     exit
 
