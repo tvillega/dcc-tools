@@ -36,7 +36,7 @@ fi
 # Clone repo
 
 if [[ -d "$HOME/.local/src/dcc-tools" ]] ; then
-    rm $HOME/.local/src/dcc-tools
+    rm -rf $HOME/.local/src/dcc-tools
 fi
 
 git clone -b ssh-client-mode https://github.com/tvillega/dcc-tools.git $HOME/.local/src/dcc-tools
@@ -44,7 +44,7 @@ git clone -b ssh-client-mode https://github.com/tvillega/dcc-tools.git $HOME/.lo
 # Enable bin
 
 if [[ -f ${HOME}/.local/bin/dcc-tools ]] ; then
-    rm -rf $HOME/.local/bin/dcc-tools
+    rm $HOME/.local/bin/dcc-tools
 fi
 
 ln -s ${HOME}/.local/src/dcc-tools/dcc-tools ${HOME}/.local/bin/dcc-tools
