@@ -50,7 +50,7 @@ function edit_tools() {
         :
 
     elif [[ $tool == "zola" ]] ; then
-        if [[ ! -f $TOOLS/zola ]] ; then
+        if [[ ! -f $TOOLS_DIR/zola ]] ; then
             $TOOLS_DIR/zola-fetch install $TOOLS_DIR
         fi
 
