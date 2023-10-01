@@ -35,7 +35,7 @@ fi
 
 # Clone repo
 
-git clone https://github.com/tvillega/dcc-tools.git $HOME/.local/src/dcc-tools
+git clone -b ssh-client-mode https://github.com/tvillega/dcc-tools.git $HOME/.local/src/dcc-tools
 
 # Enable bin
 
