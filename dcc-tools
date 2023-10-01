@@ -18,7 +18,7 @@ function install_tools() {
     if [[ -z $tool ]] ; then
         printf -- "ERROR: No tool selected\n" 1>$2
 
-    elif [[ $tool == "imprimir" ]] ; then
+    elif [[ $tool == "imprime" ]] ; then
         :
 
     else
