@@ -6,8 +6,26 @@ dt_exec_symlink=$(command -v dcc-tools)
 dt_exec_path=$(readlink $dt_exec_symlink)
 TOOLS_DIR=${dt_exec_path%%/dcc-tools}
 
+BIN_DIR="$HOME/.local/bin"
+
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
+
+function install_tools() {
+
+    local tool=$1
+
+    if [[ -z $tool ]] ; then
+        printf -- "ERROR: No tool selected\n" 1>$2
+
+    elif [[ $tool == "imprimir" ]] ; then
+        :
+
+    else
+        printf -- "ERROR: Unknown tool\n" 1>$2
+
+    ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
+}
 
 for arg in "$@"
 do
@@ -30,6 +48,11 @@ do
         os-release)
             shift
             cat /etc/os-release
+            exit
+            ;;
+        install)
+            shift
+            install_tools $1
             exit
             ;;
         *)
