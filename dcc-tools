@@ -37,13 +37,33 @@ function list_tools() {
 
 }
 
+function destroy_tools() {
+
+    height=$(tput lines)
+    width=$(tput cols)
+
+    clear
+
+    tput cup "$((height/2))" "$((width/2))"
+
+    printf -- "\e[3mI Used the Stones to Destroy the Stones\e[0m"
+
+    exit
+
+}
+
 function edit_tools() {
 
     local mode=$1
     local tool=$2
 
     if [[ -z $tool ]] ; then
-        printf -- "ERROR: No tool selected\n" 1>&2
+        printf -- "ERROR: no tool selected\n" 1>&2
+        exit
+
+    elif [[ $tool == "dcc-tools" ]] ; then
+        [[ $mode == "remove" ]] && destroy_tools
+        printf -- "ERROR: already installed\n"
         exit
 
     elif [[ $tool == "imprime" ]] ; then
