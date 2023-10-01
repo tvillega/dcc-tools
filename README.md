@@ -50,8 +50,6 @@ Actualizar herramientas:
 dcc-tools pull
 ```
 
-Actualizar herramientas (
-
 # Herramientas disponibles
 
 ## Imprime
