@@ -26,8 +26,14 @@ function myhelp() {
 
 function list_tools() {
 
-    printf -- "imprime\n"
-    printf -- "zola\n"
+    for i in $(find $HOME/.local/bin) ; do
+        if [[ -L "$i" ]] ; then
+            og_path=$(readlink $i)
+            if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
+                printf -- "%s\n" ${og_path##*/}
+            fi
+        fi
+    done
 
 }
 
