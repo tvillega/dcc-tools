@@ -39,6 +39,7 @@ function remove_zola() {
     else
         printf -- "ERROR: Zola not installed\n" 1>&2
         exit
+    fi
 }
 
 for arg in "$@"
