@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+dt_exec_symlink=$(command -v dcc-tools)
+dt_exec_path=$(readlink $dt_exec_symlink)
+TOOLS_DIR=${dt_exec_path%%/dcc-tools}
+
+git_cmd="git -C $TOOLS_DIR"
+
+for arg in "$@"
+do
+    case $arg in
+        status)
+            shift
+            $git_cmd status
+            exit
+            ;;
+        pull)
+            shift
+            $git_cmd pull
+            exit
+            ;;
+        *)
+            ;;
+    esac
+done
