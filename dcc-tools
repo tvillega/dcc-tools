@@ -11,6 +11,19 @@ BIN_DIR="$HOME/.local/bin"
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
 
+function myhelp() {
+
+    printf -- "Herramientas para el servidor del dcc\n"
+    printf -- "  status      Revisa el estado del repositorio\n"
+    printf -- "  fetch       Descarga actualizaciones\n"
+    printf -- "  pull        Aplica las actualizaciones\n"
+    printf -- "  os-release  Información sobre el servidor\n"
+    printf -- "  install     Instala una herramienta\n"
+    printf -- "  remove      Elimina una herramienta\n"
+    printf -- "  list        Lista herramientas disponibles\n"
+
+}
+
 function edit_tools() {
 
     local mode=$1
@@ -45,6 +58,10 @@ function edit_tools() {
 for arg in "$@"
 do
     case $arg in
+        help|-h|--help)
+            shift
+            myhelp
+            ;;
         status)
             shift
             $git_cmd status
