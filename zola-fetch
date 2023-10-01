@@ -6,6 +6,8 @@ bin_dir="$HOME/.local/bin"
 
 function install_zola() {
 
+    target_dir=$1
+
     # short names
     gh_url="https://github.com/getzola/zola"
     distro="unknown-linux-gnu"
@@ -23,7 +25,7 @@ function install_zola() {
     curl -s -L ${gh_url}/releases/download/${zola_tag}/zola-${zola_tag}-x86_64-${distro}.tar.gz --output ${che_dir}/zola.tar.gz
 
     # extract binary file to exec path
-    tar -xf ${che_dir}/zola.tar.gz -C ${bin_dir}
+    tar -xf ${che_dir}/zola.tar.gz -C ${target_dir}
 
     # clean cache
     rm ${che_dir}/zola.tar.gz
@@ -47,12 +49,12 @@ do
     case $arg in
         install)
             shift
-            install_zola
+            install_zola $1
             exit
             ;;
         remove)
             shift
-            remove_zola
+            remove_zola $1
             exit
             ;;
         *)
