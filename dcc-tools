@@ -22,7 +22,8 @@ function install_tools() {
         :
 
     else
-        printf -- "ERROR: Unknown tool\n" 1>$2
+        printf -- "ERROR: ${tool}: unknown tool\n" 1>$2
+        exit
     fi
 
     ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
