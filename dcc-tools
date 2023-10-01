@@ -37,6 +37,7 @@ function list_tools() {
 
 }
 
+<<<<<<< HEAD
 function destroy_tools() {
 
     height=$(tput lines)
@@ -52,18 +53,15 @@ function destroy_tools() {
 
 }
 
+=======
+>>>>>>> parent of ea95336 (feat(dcc-tools): catch 'dcc-tools' argument for install|remove)
 function edit_tools() {
 
     local mode=$1
     local tool=$2
 
     if [[ -z $tool ]] ; then
-        printf -- "ERROR: no tool selected\n" 1>&2
-        exit
-
-    elif [[ $tool == "dcc-tools" ]] ; then
-        [[ $mode == "remove" ]] && destroy_tools
-        printf -- "ERROR: already installed\n"
+        printf -- "ERROR: No tool selected\n" 1>&2
         exit
 
     elif [[ $tool == "imprime" ]] ; then
