@@ -17,6 +17,11 @@ do
             $git_cmd status
             exit
             ;;
+        fetch)
+            shift
+            $git_cmd fetch
+            exit
+            ;;
         pull)
             shift
             $git_cmd pull
