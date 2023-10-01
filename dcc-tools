@@ -14,22 +14,21 @@ git_cmd="git -C $TOOLS_DIR"
 function install_tools() {
 
     local tool=$1
-    local valid=""
 
     if [[ -z $tool ]] ; then
-        printf -- "ERROR: No tool selected\n" 1>$2
+        printf -- "ERROR: No tool selected\n" 1>&2
+        exit
 
     elif [[ $tool == "imprime" ]] ; then
-        valid="y"
+        :
 
     else
-        printf -- "ERROR: ${tool}: unknown tool\n" 1>$2
+        printf -- "ERROR: ${tool}: unknown tool\n" 1>&2
         exit
     fi
 
-    if [[ $valid == "y" ]] ; then
-        ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
-    fi
+    ln -s $TOOLS_DIR/$tool $BIN_DIR/$tool
+
 }
 
 for arg in "$@"
