@@ -24,6 +24,13 @@ function myhelp() {
 
 }
 
+function list_tools() {
+
+    printf -- "imprime\n"
+    printf -- "zola\n"
+
+}
+
 function edit_tools() {
 
     local mode=$1
@@ -90,6 +97,11 @@ do
         remove)
             shift
             edit_tools "remove" $1
+            exit
+            ;;
+        list)
+            shift
+            list_tools
             exit
             ;;
         *)
