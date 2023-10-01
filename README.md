@@ -2,7 +2,7 @@
 
 Repositorio con scripts para manejar más facilmente el servidor del departamento.
 
-Inspirado en `[scoop](https://scoop.sh)`.
+Inspirado en [`scoop`](https://scoop.sh).
 
 ## Instalación
 
