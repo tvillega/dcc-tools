@@ -23,6 +23,9 @@ function edit_tools() {
     elif [[ $tool == "imprime" ]] ; then
         :
 
+    elif [[ $tool == "zola" ]] ; then
+        $TOOLS_DIR/zola-fetch install
+
     else
         printf -- "ERROR: ${tool}: unknown tool\n" 1>&2
         exit

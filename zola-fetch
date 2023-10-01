@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+# dcc-tools assumes this places
+che_dir="$HOME/.cache/zola"
+bin_dir="$HOME/.local/bin"
+
+function install_zola() {
+
+    # short names
+    gh_url="https://github.com/getzola/zola"
+    distro="unknown-linux-gnu"
+
+    # get latest version url
+    zola_url=$(curl -w "%{url_effective}\n" -I -L -s -S ${gh_url}/releases/latest -o /dev/null)
+
+    # get latest tag
+    zola_tag=${zola_url##*/}
+
+    # create cache
+    mkdir ${che_dir}
+
+    # download binary file
+    curl -s -L ${gh_url}/releases/download/${zola_tag}/zola-${zola_tag}-x86_64-${distro}.tar.gz --output ${che_dir}/zola.tar.gz
+
+    # extract binary file to exec path
+    tar -xf ${che_dir}/zola.tar.gz -C ${bin_dir}
+
+    # clean cache
+    rm ${che_dir}/zola.tar.gz
+    rmdir ${che_dir}
+
+}
+
+function remove_zola() {
+
+    if [[ -f ${bin_dir} ]] ; then
+        rm ${bin_dir}/zola
+    
+    else
+        printf -- "ERROR: Zola not installed\n" 1>&2
+        exit
+}
+
+for arg in "$@"
+do
+    case $arg in
+        install)
+            shift
+            install_zola
+            exit
+            ;;
+        remove)
+            shift
+            remove_zola
+            exit
+            ;;
+        *)
+            ;;
+    esac
+done
