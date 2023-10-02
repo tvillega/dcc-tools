@@ -14,7 +14,7 @@ ssh user@anakena.dcc.uchile.cl
 
 2. Ejecutar el instalador:
 ```
-curl https://raw.githubusercontent.com/tvillega/dcc-tools/ssh-client-mode/install.sh | bash
+curl https://raw.githubusercontent.com/tvillega/dcc-tools/install.sh | bash
 ```
 
 3. Aplicar los cambios:

@@ -45,7 +45,7 @@ if [[ -d "$HOME/.local/src/dcc-tools" ]] ; then
     rm -rf "$HOME/.local/src/dcc-tools"
 fi
 
-git clone -b ssh-client-mode https://github.com/tvillega/dcc-tools.git "$HOME/.local/src/dcc-tools"
+git clone https://github.com/tvillega/dcc-tools.git "$HOME/.local/src/dcc-tools"
 
 # Enable bin
 
