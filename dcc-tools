@@ -158,6 +158,25 @@ function remove_tools() {
 
 }
 
+function self_remove_tools() {
+
+    # delete symlinks
+    printf -- 'Deleting symlinks...'
+    for i in $(dcc-tools list) ; do
+        rm "${BIN_DIR}/$i"
+    done
+    printf -- 'done\n'
+
+    # delete source folder
+    printf 'Deleting dcc-tools...'
+    rm -rf "$TOOLS_DIR"
+    printf -- 'done\n'
+
+    # say goodbye
+    printf -- 'Farewell good fellow\n'
+
+}
+
 function edit_tools() {
 
     local mode=$1
@@ -165,6 +184,10 @@ function edit_tools() {
 
     if [[ -z $tool ]] ; then
         printf -- "ERROR: No tool selected\n" 1>&2
+        exit
+
+    elif [[ $tool == "dcc-tools" ]] ; then
+        self_remove_tools
         exit
 
     elif [[ ! -f "$TOOLS_DIR/$tool" ]] && [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
