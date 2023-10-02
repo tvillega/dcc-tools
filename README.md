@@ -75,28 +75,15 @@ Script para imprimir en el dcc
   --duplex       | -d       - Imprimir por ambas caras de la hoja
 ```
 
-## [Zola](https://www.getzola.org)
+## Sitioweb
 
-> Instalar con `dcc-tools install zola`.
-
+> Instalar con `dcc-tools install sitioweb`
 ```
-$ zola --help
+$ sitioweb --help
 ---
-A fast static site generator with everything built-in
-
-Usage: zola [OPTIONS] <COMMAND>
-
-Commands:
-  init        Create a new Zola project
-  build       Deletes the output directory if there is one and builds the site
-  serve       Serve the site. Rebuild and reload on change automatically
-  check       Try to build the project without rendering it. Checks links
-  completion  Generate shell completion
-  help        Print this message or the help of the given subcommand(s)
-
-Options:
-  -r, --root <ROOT>      Directory to use as root of project [default: .]
-  -c, --config <CONFIG>  Path to a config file other than config.toml in the root of project [default: config.toml]
-  -h, --help             Print help
-  -V, --version          Print version
+Script para publicar sitio web en el dcc
+  --help    - Imprime este mensaje de ayuda
+  --archive - Archiva la versión anterior del sitio
+  --perms   - Establece permisos de directorios
+  --setup   - Alias de '--archive --perms'
 ```
