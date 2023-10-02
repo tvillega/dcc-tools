@@ -11,7 +11,7 @@ BIN_DIR="$HOME/.local/bin"
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
 
-function myhelp_bucker() {
+function myhelp_bucker-t() {
 
     printf -- "Administra repositorios externos\n"
     printf -- "\n"
@@ -27,7 +27,7 @@ function myhelp_install() {
     printf -- "  dcc-tools install <bucket>/<program>\n"
     printf -- "\n"
     printf -- "Los programas se instalan dentro del directorio $HOME/.lib,\n"
-    printf -- "la ruta $HOME/.local/bin sólo contiene symlinks a ella"
+    printf -- "la ruta $HOME/.local/bin sólo contiene symlinks a ella\n"
 
 }
 
@@ -69,7 +69,7 @@ function myhelp() {
     printf -- "  pull        Aplica las actualizaciones\n"
     printf -- "  remove      Elimina una herramienta **\n"
     printf -- "  update      Actualiza todas las herramientas\n"
-    prtinf -- "\n"
+    printf -- "\n"
     printf -- "Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,\n"
     printf -- "actualmente sólo disponibles para los marcados con '**'.\n"
 
