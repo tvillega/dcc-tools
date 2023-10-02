@@ -242,6 +242,7 @@ do
             ;;
         pull)
             shift
+            $git_cmd fetch
             $git_cmd pull -q
             exit
             ;;
