@@ -168,6 +168,17 @@ function edit_tools() {
 
 }
 
+function list_bucket() {
+
+    for i in $(find "$TOOLS_DIR" \( ! -regex '.*/\..*' \) -type d -maxdepth 1) ; do
+        if [[ -d "$i" ]] ; then
+            printf -- "%s\n" "${i##*/}"
+        fi
+    done
+
+}
+
+
 function install_bucket() {
 
     local name="$1"
