@@ -2,85 +2,94 @@
 
 Repositorio con scripts para manejar más facilmente el servidor del departamento.
 
+Inspirado en [`scoop`](https://scoop.sh).
+
 ## Instalación
 
 1. Ingresar al servidor anakena:
 > Reemplazar *user* con el designado por el departamento.
 ```
-$ ssh user@anakena.dcc.uchile.cl
+ssh user@anakena.dcc.uchile.cl
 ```
 
-2. Crear directorio para los ejecutables:
+2. Ejecutar el instalador:
 ```
-$ mkdir -p ~/.local/bin
-```
-
-3. Editar el archivo `.bashrc` para añadir la nueva ruta:
-> Así el comando estará disponible en los Lab Lorenzo|Toqui.
-```
-$ nano ~/.bashrc
----
-# No borrar contenido anterior, añadir esto al final
-if [ -d "$HOME/.local/bin" ] ; then
-    PATH="$HOME/.local/bin:$PATH"
-fi
+curl https://raw.githubusercontent.com/tvillega/dcc-tools/install.sh | bash
 ```
 
-4. Editar el archivo `.profile` para apuntar al anterior:
-> Así el comando estará disponible al hacer ssh.
+3. Aplicar los cambios:
+> Salir y entrar del servidor cumple el mismo efecto.
 ```
-$ nano ~/.profile
----
-# No borrar contenido anterior, añadir esto al final
 source .bashrc
 ```
 
-5. Aplicar los cambios instantáneamente:
+Para desinstalar, ejecutar:
+> Esto eliminará los programas y symlinks creados por `dcc-tools`, así como su source code.
 ```
-$ source ~/.bashrc
-```
-
-6. Crear directorio para *source code*:
-```
-$ mkdir -p ~/.local/src
+dcc-tools remove dcc-tools
 ```
 
-7. Ir al directorio de *source code*:
+## Comandos
+
+Listar comandos disponibles:
 ```
-$ cd ~/.local/src
+dcc-tools help
+```
+```
+Administrador de paquetes locales para el servidor del dcc
+
+  bucket      Administra repositorios externos **
+  fetch       Descarga actualizaciones
+  install     Instala un programa **
+  list        Lista los programas instalados
+  os-release  Información sobre el servidor
+  pull        Aplica las actualizaciones
+  remove      Quita un programa **
+  update      Actualiza todos los repositorios
+
+Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,
+actualmente sólo disponibles para los marcados con '**'.
 ```
 
-8. Clonar este repositorio:
+Instalar herramientas:
 ```
-$ git clone https://github.com/tvillega/dcc-tools.git
-```
-
-9. Instalar herramientas deseadas (e.g. `imprime`):
-```
-$ ln -s ${HOME}/.local/src/dcc-tools/imprime ${HOME}/.local/bin/imprime
+dcc-tools install <tool>
 ```
 
-## Actualización
-
-Para actualizar las herramientas:
+Actualizar herramientas:
 ```
-$ cd ~/.local/src/dcc-tools
-$ git pull
+dcc-tools pull
 ```
 
 # Herramientas disponibles
 
-## Imprimir
+## Imprime
+
+> Instalar con `dcc-tools install imprime`.
 
 ```
 $ imprime --help
 ---
 Script para imprimir en el dcc
   --help         | -h       - Print this help message
+  --more-help    | -hh      - Print extended help message
   --lorenzo      | -lp      - Usar impresora del pasillo Lab Lorenzo
   --toqui        | -tp      - Usar impresora en Lab Toqui
   --file    FILE | -f FILE  - Archivo a imprimir, DEBE ser pdf
                               se incluye la conversión a PostScript
   --single       | -s       - Imprimir por una sola cara de la hoja
   --duplex       | -d       - Imprimir por ambas caras de la hoja
+```
+
+## Sitioweb
+
+> Instalar con `dcc-tools install sitioweb`
+```
+$ sitioweb --help
+---
+Script para publicar sitio web en el dcc
+  --help    - Imprime este mensaje de ayuda
+  --archive - Archiva la versión anterior del sitio
+  --perms   - Establece permisos de directorios
+  --setup   - Alias de '--archive --perms'
 ```
