@@ -30,14 +30,19 @@ Listar comandos disponibles:
 dcc-tools help
 ```
 ```
-  bucket      Administra repositorios externos
+Administrador de paquetes locales para el servidor del dcc
+
+  bucket      Administra repositorios externos **
   fetch       Descarga actualizaciones
-  install     Instala una herramienta
-  list        Lista herramientas instaladas
+  install     Instala un programa **
+  list        Lista los programas instalados
   os-release  Información sobre el servidor
   pull        Aplica las actualizaciones
-  remove      Elimina una herramienta
-  update      Actualiza todas las herramientas
+  remove      Quita un programa **
+  update      Actualiza todos los repositorios
+
+Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,
+actualmente sólo disponibles para los marcados con '**'.
 ```
 
 Instalar herramientas:
