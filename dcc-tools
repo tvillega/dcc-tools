@@ -231,7 +231,7 @@ function remove_bucket() {
         $git_cmd rm -f "$TOOLS_DIR/$name"
 
     else
-        printf -- 'ERROR: %s: not found' "$name"
+        printf -- 'ERROR: %s: not found\n' "$name"
     fi
 
 }
