@@ -11,7 +11,7 @@ BIN_DIR="$HOME/.local/bin"
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
 
-function myhelp_bucker-t() {
+function myhelp_bucket() {
 
     printf -- "Administra repositorios externos\n"
     printf -- "\n"
@@ -63,12 +63,12 @@ function myhelp() {
     printf -- "\n"
     printf -- "  bucket      Administra repositorios externos **\n"
     printf -- "  fetch       Descarga actualizaciones\n"
-    printf -- "  install     Instala una herramienta **\n"
-    printf -- "  list        Lista herramientas instaladas\n"
+    printf -- "  install     Instala un programa **\n"
+    printf -- "  list        Lista los programas instalados\n"
     printf -- "  os-release  Información sobre el servidor\n"
     printf -- "  pull        Aplica las actualizaciones\n"
-    printf -- "  remove      Elimina una herramienta **\n"
-    printf -- "  update      Actualiza todas las herramientas\n"
+    printf -- "  remove      Quita un programa **\n"
+    printf -- "  update      Actualiza todos los repositorios\n"
     printf -- "\n"
     printf -- "Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,\n"
     printf -- "actualmente sólo disponibles para los marcados con '**'.\n"
