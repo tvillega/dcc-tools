@@ -47,6 +47,8 @@ function edit_tools() {
         exit
 
     elif [[ ! -f "$TOOLS_DIR/$tool" ]] || [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
+        echo "$TOOLS_DIR/$tool"
+        echo "$TOOLS_DIR/${tool}-fetch"
         printf -- 'ERROR: %s: unknown tool\n' "$tool" 1>&2
         exit
     fi
@@ -101,12 +103,12 @@ do
             ;;
         install)
             shift
-            edit_tools "install" "$1"
+            edit_tools "install" $1
             exit
             ;;
         remove)
             shift
-            edit_tools "remove" "$1"
+            edit_tools "remove" $1
             exit
             ;;
         list)
