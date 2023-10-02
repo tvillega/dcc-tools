@@ -93,6 +93,19 @@ function list_tools() {
 
 }
 
+function update_tools() {
+
+    printf -- '%s\n' "$TOOLS_DIR"
+    $git_cmd pull
+    for dir in $TOOLS_DIR/* ; do
+        if [[ -d "$dir" ]] ; then
+            printf -- '%s\n' "$dir"
+            git -C "$dir" pull
+        fi
+    done
+
+}
+
 function install_tools() {
 
     local tool="$1"
@@ -278,8 +291,7 @@ do
             ;;
         update)
             shift
-            $git_cmd pull
-            $git_cmd submodule update --init --recursive
+            update_tools
             exit
             ;;
         *)
