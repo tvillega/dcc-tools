@@ -37,6 +37,58 @@ function list_tools() {
 
 }
 
+function install_tools() {
+
+    local tool="$1"
+
+    # Detect bucket
+    if [[ "$tool" =~ "/" ]] ; then # found bucket
+        bucket="${tool%%/*}"
+        tool="${tool##*/}"
+        program_path="${TOOLS_DIR}/${bucket}"
+
+    else
+        program_path="${TOOLS_DIR}"
+    fi
+
+    # Detect tool-fetch
+    if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
+        tool_exec="${program_path}/${tool}-fetch"
+        chmod +x $tool_exec
+        $tool_exec install "${program_path}"
+
+    else
+        chmod +x "${program_path}/${tool}"
+    fi
+
+    ln -s "${program_path}" "${BIN_DIR}/${tool}"
+}
+
+function remove_tools() {
+
+    local tool="$1"
+
+    # Detect bucket
+    if [[ "$tool" =~ "/" ]] ; then # found bucket
+        bucket="${tool%%/*}"
+        tool="${tool##*/}"
+        program_path="${TOOLS_DIR}/${bucket}"
+
+    else
+        program_path="${TOOLS_DIR}"
+    fi
+
+    # Detect tool-fetch
+    if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
+        tool_exec="${program_path}/${tool}-fetch"
+        chmod +x $tool_exec
+        $tool_exec remove "${program_path}"
+    fi
+
+    rm "${BIN_DIR}/${tool}"
+
+}
+
 function edit_tools() {
 
     local mode=$1
@@ -52,26 +104,10 @@ function edit_tools() {
     fi
 
     if [[ $mode == "install" ]] ; then
-
-        if [[ -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
-            TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
-            chmod +x "$TOOL_EXEC"
-            $TOOL_EXEC install "${TOOLS_DIR}"
-            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/${tool##*/}"
-        else
-            ln -s "$TOOLS_DIR/$tool" "$BIN_DIR/$tool"
-        fi
+        install_tools "${tool}"
 
     elif [[ $mode == "remove" ]] ; then
-
-        if [[ -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
-            TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
-            chmod +x "$TOOL_EXEC"
-            $TOOL_EXEC remove "$TOOLS_DIR"
-        fi
-
-        rm "${BIN_DIR}/${tool}"
-        
+        remove_tools "${tool}"
     fi
 
 }
