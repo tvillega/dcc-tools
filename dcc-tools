@@ -26,8 +26,8 @@ function myhelp_install() {
     printf -- "\n"
     printf -- "  dcc-tools install <bucket>/<program>\n"
     printf -- "\n"
-    printf -- "Los programas se instalan dentro del directorio $HOME/.lib,\n"
-    printf -- "la ruta $HOME/.local/bin sólo contiene symlinks a ella\n"
+    printf -- 'Los programas se instalan dentro del directorio %s,\n' "$TOOLS_DIR"
+    printf -- 'la ruta %s/.local/bin sólo contiene symlinks a ella\n' "$HOME"
 
 }
 
@@ -110,7 +110,7 @@ function install_tools() {
     # Detect tool-fetch
     if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
         tool_exec="${program_path}/${tool}-fetch"
-        chmod +x $tool_exec
+        chmod +x "$tool_exec"
         $tool_exec install "${program_path}"
 
     else
@@ -137,7 +137,7 @@ function remove_tools() {
     # Detect tool-fetch
     if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
         tool_exec="${program_path}/${tool}-fetch"
-        chmod +x $tool_exec
+        chmod +x "$tool_exec"
         $tool_exec remove "${program_path}"
     fi
 
