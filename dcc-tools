@@ -83,9 +83,10 @@ function list_tools() {
             if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
                 printf -- "%s\n" "${og_path##*/}"
             fi
+            og_basepath=${og_path##*/}
             og_path=${og_path%/*}
             if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
-                printf -- "%s\n" "${og_path##*/}"
+                printf -- "%s\n" "${og_basepath}"
             fi
         fi
     done
