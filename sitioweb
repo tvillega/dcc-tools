@@ -29,8 +29,8 @@ function chmod_website() {
 
     # permissions for apache
     chmod o+x  "$HOME"
-    chmod o+x  "$HOME/public_www"
-    chmod go+r "$HOME/public_www"
+    chmod -R o+x "$HOME/public_www"
+    chmod -R go+r "$HOME/public_www"
 
 }
 
