@@ -89,7 +89,7 @@ function install_bucket() {
         exit
     fi
 
-    $git_cmd submodule add "$_url" "$name"
+    $git_cmd submodule add --force "$_url" "$name"
 
 }
 
