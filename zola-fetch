@@ -35,13 +35,12 @@ function install_zola() {
 
 function remove_zola() {
 
-    if [[ -f ${bin_dir} ]] ; then
-        rm ${bin_dir}/zola
-    
-    else
-        printf -- "ERROR: Zola not installed\n" 1>&2
-        exit
+    local target_dir=$1
+
+    if [[ -f "${target_dir}/zola" ]] ; then
+        rm "${target_dir}/zola"
     fi
+    
 }
 
 for arg in "$@"
