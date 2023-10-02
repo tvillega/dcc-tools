@@ -72,6 +72,59 @@ function edit_tools() {
 
 }
 
+function install_bucket() {
+
+    local name="$1"
+    local _url="$2"
+
+    if [[ -z $name ]] ; then
+        printf -- "ERROR: no bucket name given\n" 1>&2
+        exit
+
+    elif [[ -z $_url ]] ; then
+        printf -- 'ERROR: %s: no given repository' "$name"
+        exit
+    fi
+
+    $git_cmd submodule add "$_url" "$name"
+
+}
+
+function remove_bucker() {
+
+    local name="${1:-val}"
+
+    if [[ -d "$TOOLS_DIR/$name" ]] ; then
+        rm -rf "$TOOLS_DIR/$name"
+
+    else
+        printf -- 'ERROR: %s: not found' "$name"
+    fi
+
+}
+
+function bucket_function() {
+
+for arg in "$@"
+do
+    case $arg in
+        add)
+            shift
+            install_bucket "$@"
+            exit
+            ;;
+        remove)
+            shift
+            remove_bucket "$1"
+            exit
+            ;;
+        *)
+            ;;
+    esac
+done
+
+}
+
 for arg in "$@"
 do
     case $arg in
@@ -101,17 +154,22 @@ do
             ;;
         install)
             shift
-            edit_tools "install" $1
+            edit_tools "install" "$1"
             exit
             ;;
         remove)
             shift
-            edit_tools "remove" $1
+            edit_tools "remove" "$1"
             exit
             ;;
         list)
             shift
             list_tools
+            exit
+            ;;
+        bucket)
+            shift
+            bucket_function "$@"
             exit
             ;;
         *)
