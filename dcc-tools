@@ -90,7 +90,7 @@ function install_bucket() {
 
 }
 
-function remove_bucker() {
+function remove_bucket() {
 
     local name="${1:-val}"
 
