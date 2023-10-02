@@ -66,12 +66,11 @@ function edit_tools() {
 
         if [[ -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
             TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
-            chmod +x "$TOOl_EXEC"
+            chmod +x "$TOOL_EXEC"
             $TOOL_EXEC remove "$TOOLS_DIR"
-            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/${tool##*/}"
-        else
-            rm "${BIN_DIR}/${tool##*/}"
         fi
+
+        rm "${BIN_DIR}/${tool}"
         
     fi
 
