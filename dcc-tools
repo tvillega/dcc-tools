@@ -55,19 +55,22 @@ function edit_tools() {
 
         if [[ -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
             TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
-            $TOOL_EXEC install "$TOOLS_DIR"
+            $TOOL_EXEC install "${TOOLS_DIR}"
+            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/$tool"
+        else
+            ln -s "$TOOLS_DIR/$tool" "$BIN_DIR/$tool"
         fi
-
-        ln -s "$TOOLS_DIR/$tool" "$BIN_DIR/$tool"
 
     elif [[ $mode == "remove" ]] ; then
 
         if [[ -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
             TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
             $TOOL_EXEC remove "$TOOLS_DIR"
+            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/$tool"
+        else
+            rm "${BIN_DIR}/${tool##*/}"
         fi
         
-        rm "$BIN_DIR/$tool"
     fi
 
 }
