@@ -11,16 +11,67 @@ BIN_DIR="$HOME/.local/bin"
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
 
+function myhelp_bucker() {
+
+    printf -- "Administra repositorios externos\n"
+    printf -- "\n"
+    printf -- "  add <name> <git-url> Añade un repositorio externo\n"
+    printf -- "  remove <name>        Quita un repositorio externo\n"
+
+}
+
+function myhelp_install() {
+
+    printf -- "Instala localmente un programa\n"
+    printf -- "\n"
+    printf -- "  dcc-tools install <bucket>/<program>\n"
+    printf -- "\n"
+    printf -- "Los programas se instalan dentro del directorio $HOME/.lib,\n"
+    printf -- "la ruta $HOME/.local/bin sólo contiene symlinks a ella"
+
+}
+
+function myhelp_remove() {
+
+    printf -- "Quita un programa instalado localmente\n"
+    printf -- "\n"
+    printf -- "  dcc-tools remove <program>\n"
+    printf -- "\n"
+    printf -- "No incluir el prefijo del bucket, se encontrará\n"
+    printf -- "automáticamente siguiendo la ruta del symlink\n"
+
+}
+
 function myhelp() {
 
-    printf -- "  bucket      Administra repositorios externos\n"
+    local tool="$1"
+
+    if [[ $tool == "bucket" ]] ; then
+        myhelp_bucket
+        exit
+
+    elif [[ $tool == "install" ]] ; then
+        myhelp_install
+        exit
+
+    elif [[ $tool == "remove" ]] ; then
+        myhelp_remove
+        exit
+    fi
+
+    printf -- "Administrador de paquetes locales para el servidor del dcc\n"
+    printf -- "\n"
+    printf -- "  bucket      Administra repositorios externos **\n"
     printf -- "  fetch       Descarga actualizaciones\n"
-    printf -- "  install     Instala una herramienta\n"
+    printf -- "  install     Instala una herramienta **\n"
     printf -- "  list        Lista herramientas instaladas\n"
     printf -- "  os-release  Información sobre el servidor\n"
     printf -- "  pull        Aplica las actualizaciones\n"
-    printf -- "  remove      Elimina una herramienta\n"
+    printf -- "  remove      Elimina una herramienta **\n"
     printf -- "  update      Actualiza todas las herramientas\n"
+    prtinf -- "\n"
+    printf -- "Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,\n"
+    printf -- "actualmente sólo disponibles para los marcados con '**'.\n"
 
 }
 
@@ -171,7 +222,8 @@ do
     case $arg in
         help|-h|--help)
             shift
-            myhelp
+            myhelp "$1"
+            exit
             ;;
         fetch)
             shift
