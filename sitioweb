@@ -4,6 +4,16 @@
 src_dir="$HOME/.local/src/dcc-tools"
 bin_dir="$HOME/.local/bin"
 
+function myhelp() {
+
+    printf -- "Script para publicar sitio web en el dcc\n"
+    printf -- "  --help    - Imprime este mensaje de ayuda\n"
+    printf -- "  --archive - Archiva la versión anterior del sitio\n"
+    printf -- "  --perms   - Establece permisos de directorios\n"
+    printf -- "  --setup   - Alias de '--archive --perms'\n"
+
+}
+
 function archive_webpage() {
 
     # check if path exists
@@ -15,15 +25,20 @@ function archive_webpage() {
 
 }
 
-function setup_webpage() {
-
-    archive_webpage
-    mkdir "$HOME/public_www"    
+function chmod_website() {
 
     # permissions for apache
     chmod o+x  "$HOME"
     chmod o+x  "$HOME/public_www"
     chmod go+r "$HOME/public_www"
+
+}
+
+function setup_webpage() {
+
+    archive_webpage
+    mkdir "$HOME/public_www"
+    chmod_website
 
 }
 
@@ -33,6 +48,11 @@ do
         archive)
             shift
             archive_webpage
+            exit
+            ;;
+        chmod|perms)
+            shift
+            chmod_website
             exit
             ;;
         setup)
