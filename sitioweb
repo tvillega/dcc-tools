@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# dcc-tools assumes this places
+src_dir="$HOME/.local/src/dcc-tools"
+bin_dir="$HOME/.local/bin"
+
+function archive_webpage() {
+
+    # check if path exists
+    if [[ -d "$HOME/public_www" ]] ; then
+        now=$(date +%Y-%m-%d-%H-%M)
+        mkdir -p "$HOME/public_www.old"
+        mv "$HOME/public_www" "$HOME/public_www.old/$now"
+    fi
+
+}
+
+function setup_webpage() {
+
+    archive_webpage
+    mkdir "$HOME/public_www"    
+
+    # permissions for apache
+    chmod o+x  "$HOME"
+    chmod o+x  "$HOME/public_www"
+    chmod go+r "$HOME/public_www"
+
+}
+
+for arg in "$@"
+do
+    case $arg in
+        archive)
+            shift
+            archive_webpage
+            exit
+            ;;
+        setup)
+            shift
+            setup_webpage
+            exit
+            ;;
+        *)
+            ;;
+    esac
+done
