@@ -61,7 +61,7 @@ function install_tools() {
         chmod +x "${program_path}/${tool}"
     fi
 
-    ln -s "${program_path}" "${BIN_DIR}/${tool}"
+    ln -s "${program_path}/${tool}" "${BIN_DIR}/${tool}"
 }
 
 function remove_tools() {
