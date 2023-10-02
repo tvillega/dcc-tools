@@ -14,13 +14,7 @@ ssh user@anakena.dcc.uchile.cl
 
 2. Ejecutar el instalador:
 ```
-curl https://raw.githubusercontent.com/tvillega/dcc-tools/master/install.sh | bash
-```
-
-3. Aplicar los cambios:
-> Salir y entrar del servidor cumple el mismo efecto.
-```
-source .bashrc
+curl https://raw.githubusercontent.com/tvillega/dcc-tools/master/install.sh | bash && source .bashrc
 ```
 
 Para desinstalar, ejecutar:
@@ -51,17 +45,22 @@ Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,
 actualmente sólo disponibles para los marcados con '**'.
 ```
 
-Instalar herramientas:
+Instalar un programa:
 ```
 dcc-tools install <tool>
 ```
 
-Actualizar herramientas:
+Actualizar repositorio actual:
 ```
 dcc-tools pull
 ```
 
-# Herramientas disponibles
+Actualizar todos los repositorios:
+```
+dcc-tools update
+```
+
+# Programas disponibles
 
 ## Imprime
 
@@ -92,4 +91,20 @@ Script para publicar sitio web en el dcc
   --archive - Archiva la versión anterior del sitio
   --perms   - Establece permisos de directorios
   --setup   - Alias de '--archive --perms'
+```
+
+# Más programas
+
+Se puede añadir repositorios externos, denominados buckets, que contengan otros programas para instalar.
+
+## dcc-tools
+
+> Bucket oficial con herramientas no-específicas al dcc.
+```
+dcc-tools bucket add extra https://github.com/tvillega/dcc-tools-extra.git
+```
+
+Para instalar programas de este bucket (e.g. [`zola`](https://www.getzola.org):
+```
+dcc-tools install extra/zola
 ```
