@@ -45,17 +45,21 @@ function setup_webpage() {
 for arg in "$@"
 do
     case $arg in
-        archive)
+        --help)
+            shift
+            myhelp
+            ;;
+        --archive)
             shift
             archive_webpage
             exit
             ;;
-        chmod|perms)
+        --chmod|--perms)
             shift
             chmod_website
             exit
             ;;
-        setup)
+        --setup)
             shift
             setup_webpage
             exit
