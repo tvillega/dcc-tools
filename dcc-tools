@@ -62,11 +62,11 @@ function myhelp() {
     printf -- "Administrador de paquetes locales para el servidor del dcc\n"
     printf -- "\n"
     printf -- "  bucket      Administra repositorios externos **\n"
-    printf -- "  fetch       Descarga actualizaciones\n"
+    printf -- "  help        Imprime esta ayuda\n"
     printf -- "  install     Instala un programa **\n"
     printf -- "  list        Lista los programas instalados\n"
     printf -- "  os-release  Información sobre el servidor\n"
-    printf -- "  pull        Aplica las actualizaciones\n"
+    printf -- "  pull        Actualiza el repositorio principal\n"
     printf -- "  remove      Quita un programa **\n"
     printf -- "  update      Actualiza todos los repositorios\n"
     printf -- "\n"
@@ -269,11 +269,6 @@ do
         help|-h|--help)
             shift
             myhelp "$1"
-            exit
-            ;;
-        fetch)
-            shift
-            $git_cmd fetch
             exit
             ;;
         pull)
