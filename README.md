@@ -23,6 +23,12 @@ curl https://raw.githubusercontent.com/tvillega/dcc-tools/ssh-client-mode/instal
 source .bashrc
 ```
 
+Para desinstalar, ejecutar:
+> Esto eliminará los programas y symlinks creados por `dcc-tools`, así como su source code.
+```
+dcc-tools remove dcc-tools
+```
+
 ## Comandos
 
 Listar comandos disponibles:
