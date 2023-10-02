@@ -216,6 +216,11 @@ function bucket_function() {
 for arg in "$@"
 do
     case $arg in
+        list)
+            shift
+            list_bucket
+            exit
+            ;;
         add)
             shift
             install_bucket "$@"
