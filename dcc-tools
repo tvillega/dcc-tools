@@ -172,6 +172,12 @@ do
             bucket_function "$@"
             exit
             ;;
+        update)
+            shift
+            $git_cmd pull
+            $git_cmd submodule update --init --recursive
+            exit
+            ;;
         *)
             ;;
     esac
