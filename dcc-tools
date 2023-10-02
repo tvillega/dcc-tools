@@ -57,7 +57,7 @@ function edit_tools() {
             TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
             chmod +x "$TOOL_EXEC"
             $TOOL_EXEC install "${TOOLS_DIR}"
-            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/$tool"
+            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/${tool##*/}"
         else
             ln -s "$TOOLS_DIR/$tool" "$BIN_DIR/$tool"
         fi
@@ -68,7 +68,7 @@ function edit_tools() {
             TOOL_EXEC="$TOOLS_DIR/${tool}-fetch"
             chmod +x "$TOOl_EXEC"
             $TOOL_EXEC remove "$TOOLS_DIR"
-            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/$tool"
+            ln -s "${TOOLS_DIR}/${tool%%/*}/${tool##*/}" "$BIN_DIR/${tool##*/}"
         else
             rm "${BIN_DIR}/${tool##*/}"
         fi
