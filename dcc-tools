@@ -228,7 +228,7 @@ function remove_bucket() {
 
     if [[ -d "$TOOLS_DIR/$name" ]] ; then
         $git_cmd submodule deinit "$TOOLS_DIR/$name"
-        $git_cmd rm "$TOOLS_DIR/$name"
+        $git_cmd -f rm "$TOOLS_DIR/$name"
 
     else
         printf -- 'ERROR: %s: not found' "$name"
