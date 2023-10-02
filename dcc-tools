@@ -46,9 +46,7 @@ function edit_tools() {
         printf -- "ERROR: No tool selected\n" 1>&2
         exit
 
-    elif [[ ! -f "$TOOLS_DIR/$tool" ]] || [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
-        echo "$TOOLS_DIR/$tool"
-        echo "$TOOLS_DIR/${tool}-fetch"
+    elif [[ ! -f "$TOOLS_DIR/$tool" ]] && [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
         printf -- 'ERROR: %s: unknown tool\n' "$tool" 1>&2
         exit
     fi
