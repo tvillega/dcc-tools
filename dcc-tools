@@ -237,7 +237,7 @@ do
             ;;
         pull)
             shift
-            $git_cmd pull
+            $git_cmd pull -q
             exit
             ;;
         git)
