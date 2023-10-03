@@ -125,10 +125,8 @@ function install_tools() {
         tool_exec="${program_path}/${tool}-fetch"
         chmod +x "$tool_exec"
         $tool_exec install "${program_path}"
-
-    else
-        chmod +x "${program_path}/${tool}"
     fi
+    chmod +x "${program_path}/${tool}"
 
     ln -sf "${program_path}/${tool}" "${BIN_DIR}/${tool}"
 }
