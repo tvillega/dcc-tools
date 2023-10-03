@@ -135,6 +135,11 @@ function remove_tools() {
 
     local tool="$1"
 
+    exec_full_path=$(command -v "$tool")
+    exec_base_path=${exec_full_path##"${TOOLS_DIR}"}
+
+    tool="$exec_base_path"
+
     # Detect bucket
     if [[ "$tool" =~ "/" ]] ; then # found bucket
         bucket="${tool%%/*}"
