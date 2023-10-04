@@ -62,7 +62,7 @@ function myhelp() {
     printf -- "Administrador de paquetes locales para el servidor del dcc\n"
     printf -- "\n"
     printf -- "  bucket      Administra repositorios externos **\n"
-    pritnf -- "  git         Ejecuta git dentro del repositorio principal\n"
+    printf -- "  git         Ejecuta git dentro del repositorio principal\n"
     printf -- "  help        Imprime esta ayuda\n"
     printf -- "  install     Instala un programa **\n"
     printf -- "  list        Lista los programas instalados\n"
