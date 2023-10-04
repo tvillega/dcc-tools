@@ -14,7 +14,7 @@ ssh user@anakena.dcc.uchile.cl
 
 2. Ejecutar el instalador:
 ```
-curl https://raw.githubusercontent.com/tvillega/dcc-tools/master/install.sh | bash && source .bashrc
+curl https://raw.githubusercontent.com/tvillega/dcc-tools/master/install.sh | bash && source ~/.bashrc
 ```
 
 Para desinstalar, ejecutar:
@@ -97,7 +97,7 @@ Script para publicar sitio web en el dcc
 
 Se puede añadir repositorios externos, denominados buckets, que contengan otros programas para instalar.
 
-## [dcc-tools](https://github.com/tvillega/dcc-tools-extra)
+## [dcc-tools-extra](https://github.com/tvillega/dcc-tools-extra)
 
 > Bucket oficial con herramientas no-específicas al dcc.
 ```
