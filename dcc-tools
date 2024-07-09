@@ -183,45 +183,16 @@ function tools_install() {
 
 }
 
-function update_tools() {
-
-    printf -- '%s\n' "$TOOLS_DIR"
-    $git_cmd pull
-    for dir in $TOOLS_DIR/* ; do
-        if [[ -d "$dir" ]] ; then
-            printf -- '%s\n' "$dir"
-            git -C "$dir" pull
-        fi
-    done
-
-}
-
-function self_remove_tools() {
-
-    # delete symlinks
-    printf -- 'Deleting symlinks...'
-    for i in $(dcc-tools list) ; do
-        rm "${BIN_DIR}/$i"
-    done
-    printf -- 'done\n'
-
-    # delete source folder
-    printf 'Deleting dcc-tools...'
-    rm -rf "$TOOLS_DIR"
-    printf -- 'done\n'
-
-    # say goodbye
-    printf -- 'Farewell good fellow\n'
-
-}
-
+##
+## dcc-tools remove <tool>
+##
 
 function tools_remove() {
 
     local tool="$1"
 
     if [[ $tool == "dcc-tools" ]] ; then
-        self_remove_tools
+        tools_remove_self
         exit
     fi
 
@@ -239,6 +210,40 @@ function tools_remove() {
     fi
 
     rm "${BIN_DIR}/${tool}"
+
+}
+
+##
+## dcc-tools update
+##
+
+function tools_update() {
+
+    printf -- '%s\n' "$TOOLS_DIR"
+    $git_cmd pull
+
+}
+
+##
+## dcc-tools remove dcc-tools
+##
+
+function tool_remove_self() {
+
+    # delete symlinks
+    printf -- 'Deleting symlinks...'
+    for i in $(dcc-tools list) ; do
+        rm "${BIN_DIR}/$i"
+    done
+    printf -- 'done\n'
+
+    # delete source folder
+    printf 'Deleting dcc-tools...'
+    rm -rf "$TOOLS_DIR"
+    printf -- 'done\n'
+
+    # say goodbye
+    printf -- 'Farewell good fellow\n'
 
 }
 
