@@ -248,7 +248,7 @@ function install_bucket() {
         exit
     fi
 
-    $git_cmd submodule add --force "$_url" "$name"
+    git clone "$_url" "${BUCKETS_DIR}/${name}"
 
 }
 
