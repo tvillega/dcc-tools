@@ -117,7 +117,7 @@ function list_tools() {
 
         # It needs to strip the base name two time
         # $HOME/.local/lib/dcc-tools/bucket_dir/program_dir
-        target_basedir=$(dirname "$target_basedir")
+        # -- Already stripped ------------------^^^^^^^^^^^
         # $HOME/.local/lib/dcc-tools/bucket_dir
         target_basedir=$(dirname "$target_basedir")
         # $HOME/.local/lib/dcc-tools
