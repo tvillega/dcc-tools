@@ -94,7 +94,7 @@ function myhelp() {
 # installed inside ~/.local/bin whose backlinks
 # lead to $TOOLS_DIR, ignoring any other binary of symlink
 
-function list_tools() {
+function tools_list() {
 
     readarray -t arraySymlink < <(find "$BIN_DIR" -type l)
 
@@ -146,20 +146,11 @@ function bucket_list() {
 
 }
 
-function update_tools() {
+##
+## dcc-tools install <tool>
+##
 
-    printf -- '%s\n' "$TOOLS_DIR"
-    $git_cmd pull
-    for dir in $TOOLS_DIR/* ; do
-        if [[ -d "$dir" ]] ; then
-            printf -- '%s\n' "$dir"
-            git -C "$dir" pull
-        fi
-    done
-
-}
-
-function install_tools() {
+function tools_install() {
 
     local tool_name="$1"
 
@@ -192,6 +183,19 @@ function install_tools() {
 
 }
 
+function update_tools() {
+
+    printf -- '%s\n' "$TOOLS_DIR"
+    $git_cmd pull
+    for dir in $TOOLS_DIR/* ; do
+        if [[ -d "$dir" ]] ; then
+            printf -- '%s\n' "$dir"
+            git -C "$dir" pull
+        fi
+    done
+
+}
+
 function self_remove_tools() {
 
     # delete symlinks
@@ -212,7 +216,7 @@ function self_remove_tools() {
 }
 
 
-function remove_tools() {
+function tools_remove() {
 
     local tool="$1"
 
@@ -238,7 +242,7 @@ function remove_tools() {
 
 }
 
-function edit_tools() {
+function tools_manager() {
 
     local mode=$1
     local tool=$2
@@ -253,7 +257,13 @@ function edit_tools() {
     fi
 
     if [[ $mode == "install" ]] ; then
-        install_tools "${tool}"
+        tools_install "${tool}"
+
+    elif [[ $mode == "remove" ]] ; then
+        tools_remove "${tools}"
+
+    elif [[ $mode == "list" ]] ; then
+       tools_list
     fi
 
 }
@@ -290,7 +300,7 @@ function remove_bucket() {
 
 }
 
-function bucket_function() {
+function bucket_case() {
 
 for arg in "$@"
 do
@@ -343,27 +353,27 @@ do
             ;;
         install)
             shift
-            edit_tools "install" "$1"
+            tools_manager "install" "$1"
             exit
             ;;
         remove)
             shift
-            remove_tools "$1"
+            tools_manager "remove" "$1"
             exit
             ;;
         list)
             shift
-            list_tools
+            tools_manager "list"
             exit
             ;;
         bucket)
             shift
-            bucket_function "$@"
+            buckets_case "$@"
             exit
             ;;
         update)
             shift
-            update_tools
+            tools_manager "update"
             exit
             ;;
         *)
