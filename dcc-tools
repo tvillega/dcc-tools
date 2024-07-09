@@ -294,13 +294,20 @@ function install_bucket() {
 
 }
 
+##
+## dcc-tools bucket remove <bucket>
+##
+
 function remove_bucket() {
 
-    local name="${1:-val}"
+    local name=$1
 
-    if [[ -d "$TOOLS_DIR/$name" ]] ; then
-        $git_cmd submodule deinit -f "$TOOLS_DIR/$name"
-        $git_cmd rm -f "$TOOLS_DIR/$name"
+    if [[ -z $name ]] ; then
+        printf -- 'ERROR: no bucket name given'
+        return
+
+    elif [[ -d "$BUCKETS_DIR/$name" ]] ; then
+        rm -rf "${BUCKETS_DIR}/${name}"
 
     else
         printf -- 'ERROR: %s: not found\n' "$name"
