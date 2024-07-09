@@ -10,7 +10,6 @@
 ##
 
 BIN_DIR="$HOME/.local/bin"
-LIB_DIR="$HOME/.local/lib"
 SRC_DIR="$HOME/.local/src"
 
 TOOLS_DIR="${SRC_DIR}/dcc-tools"
@@ -169,7 +168,8 @@ function install_tools() {
     #    2. extra/zola -- in which 'extra' will be returned
     # This will always grab the first cut field
     # and try to match it to a known bucket from $BUCKETS_DIR
-    local bucket_candidate="$(printf -- $tool_name | cut -f1 -d '/')"
+    # shellcheck disable=SC2155
+    local bucket_candidate="$(printf -- '%s' "$tool_name" | cut -f1 -d '/')"
 
     readarray -t arrayBucket < <(dcc-tools bucket list)
 
@@ -177,7 +177,7 @@ function install_tools() {
     for i in "${arrayBucket[@]}"; do
         if [[ "$i" == "$bucket_candidate" ]] ; then
             bucket="$bucket_candidate"
-            tool_name="$(printf -- $tool_name | cut -f2 -d '/')"
+            tool_name="$(printf -- '%s' "$tool_name" | cut -f2 -d '/')"
             break
         fi
     done
@@ -231,7 +231,7 @@ function remove_tools() {
     fullpath_bin=$(readlink "${symlink_bin}")
 
     if [[ -f "${fullpath_bin}-fetch" ]] ; then
-        rm ${fullpath_bin}
+        rm "${fullpath_bin}"
     fi
 
     rm "${BIN_DIR}/${tool}"
