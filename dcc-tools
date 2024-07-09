@@ -21,39 +21,110 @@ git_cmd="git -C $TOOLS_DIR"
 
 function myhelp_no_more_info() {
 
-    printf -- "No existe o no tiene más opciones.\n"
+    printf -- "No hay más ayuda disponible.\n"
 
 }
 
 function myhelp_bucket() {
 
-    printf -- "Administra repositorios externos\n"
-    printf -- "\n"
-    printf -- "  add <name> <git-url> Añade un repositorio externo\n"
-    printf -- "  remove <name>        Quita un repositorio externo\n"
+cat << EOF
+Administra repositorios externos
+
+  add <name> <git-url> Añade un repositorio externo
+  remove <name>        Quita un repositorio externo
+
+Ejemplos:
+Añadir el bucket 'extra'
+  $ dcc-tools bucket add extra https://github.com/tvillega/dcc-tools-extra.git
+
+Quitar el bucket 'extra'
+  $ dcc-tools bucket remove extra
+EOF
+
+}
+
+function myhelp_git() {
+
+cat << EOF
+Software de Control de Versiones
+
+Para facilitar el almacenamiento y distribución de dcc-tools se
+utiliza GitHub para almacenar su código y el de sus programas
+
+Ejemplos:
+Ver el estado actual del repositorio
+  $ dcc-tools git status
+
+Actualizar el repositorio
+  $ dcc-tools git pull
+EOF
 
 }
 
 function myhelp_install() {
 
-    printf -- "Instala localmente un programa\n"
-    printf -- "\n"
-    printf -- "  <program>          Programa específico de Anakena\n"
-    printf -- "  <bucket>/<program> Programa de un bucket externo\n"
-    printf -- "\n"
-    printf -- 'Los programas se instalan dentro del directorio %s,\n' "$TOOLS_DIR"
-    printf -- 'la ruta %s sólo contiene symlinks a ella.\n' "$HOME/.local/bin"
+cat << EOF
+Instala localmente un programa
+
+  <programa>          Programa específico de Anakena
+  <bucket>/<programa> Programa de un bucket externo
+
+Ejemplos:
+Instalar el programa 'imprime'
+  $ dcc-tools install imprime
+
+Instalar el programa 'zola'
+  $ dcc-tools install extra/zola
+EOF
+
+}
+
+function myhelp_list() {
+
+cat << EOF
+Lista los programas instalados por dcc-tools
+
+Ejemplos:
+  $ dcc-tools list
+EOF
 
 }
 
 function myhelp_remove() {
 
-    printf -- "Quita un programa instalado localmente\n"
-    printf -- "\n"
-    printf -- "  <program> Programa a quitar de la cuenta local\n"
-    printf -- "\n"
-    printf -- "No incluir el prefijo del bucket, se encontrará\n"
-    printf -- "automáticamente siguiendo la ruta del symlink\n"
+cat << EOF
+Quita un programa instalado localmente
+
+  <program> Programa a quitar
+
+Ejemplos:
+Quitar el programa 'imprime'
+  $ dcc-tools remove imprime
+
+Quitar el programa 'zola'
+  $ dcc-tools remove zola
+
+No incluir el prefijo del bucket, se encontrará
+automáticamente siguiendo la ruta del symlink
+EOF
+
+}
+
+function myhelp_update() {
+
+cat << EOF
+Actualiza dcc-tools
+
+Sólo actualiza las herramientas creadas
+específicamente para Anakena
+
+Ejemplos:
+Actualizar sólo el repositorio principal
+  $ dcc-tools update
+
+Esto es equivalente a realizar
+  $ dcc-tools git pull
+EOF
 
 }
 
@@ -68,12 +139,24 @@ function myhelp() {
                 myhelp_bucket
                 exit
                 ;;
+            git)
+                myhelp_git
+                exit
+                ;;
             install)
                 myhelp_install
                 exit
                 ;;
+            list)
+                myhelp_list
+                exit
+                ;;
             remove)
                 myhelp_remove
+                exit
+                ;;
+            update)
+                myhelp_update
                 exit
                 ;;
             *)
