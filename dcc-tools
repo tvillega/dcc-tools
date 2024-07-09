@@ -145,27 +145,33 @@ function update_tools() {
 
 function install_tools() {
 
-    local tool="$1"
+    local tool_name="$1"
 
-    # Detect bucket
-    if [[ "$tool" =~ "/" ]] ; then # found bucket
-        bucket="${tool%%/*}"
-        tool="${tool##*/}"
-        program_path="${TOOLS_DIR}/${bucket}"
+    # There are two possible input strings:
+    #    1. zola -- in which 'zola' will be returned
+    #    2. extra/zola -- in which 'extra' will be returned
+    # This will always grab the first cut field
+    # and try to match it to a known bucket from $BUCKETS_DIR
+    local bucket_candidate="$(printf -- $tool_name | cut -f1 -d '/')"
 
-    else
-        program_path="${TOOLS_DIR}"
+    readarray -t arrayBucket < <(dcc-tools bucket list)
+
+    local bucket=""
+    for i in "${arrayBucket[@]}"; do
+        if [[ "$i" == "$bucket_candidate" ]] ; then
+            bucket="$bucket_candidate"
+            tool_name="$(printf -- $tool_name | cut -f2 -d '/')"
+            break
+    done
+
+    if [[ -n "$bucket" ]] ; then
+        install_tools_advanced "$bucket" "$tool_name"
+        return
     fi
 
-    # Detect tool-fetch
-    if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
-        tool_exec="${program_path}/${tool}-fetch"
-        chmod +x "$tool_exec"
-        $tool_exec install "${program_path}"
-    fi
-    chmod +x "${program_path}/${tool}"
+    chmod +x "${TOOLS_DIR}/${tool_name}"
+    ln -sf "${TOOLS_DIR}/${tool_name}" "${BIN_DIR}/${tool_name}"
 
-    ln -sf "${program_path}/${tool}" "${BIN_DIR}/${tool}"
 }
 
 function self_remove_tools() {
