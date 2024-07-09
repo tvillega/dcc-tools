@@ -300,7 +300,7 @@ function remove_bucket() {
 
 }
 
-function bucket_case() {
+function buckets_case() {
 
 for arg in "$@"
 do
