@@ -8,7 +8,6 @@
 ##
 ## Important paths
 ##
-
 BIN_DIR="$HOME/.local/bin"
 SRC_DIR="$HOME/.local/src"
 
@@ -18,7 +17,6 @@ BUCKETS_DIR="${TOOLS_DIR}/buckets"
 ##
 ## Important programs with flags
 ##
-
 git_cmd="git -C $TOOLS_DIR"
 
 function myhelp_bucket() {
@@ -89,11 +87,6 @@ function myhelp() {
 ##
 ## dcc-tools list
 ##
-
-# The following function displays the list of programs
-# installed inside ~/.local/bin whose backlinks
-# lead to $TOOLS_DIR, ignoring any other binary of symlink
-
 function tools_list() {
 
     readarray -t arraySymlink < <(find "$BIN_DIR" -type l)
@@ -130,26 +123,8 @@ function tools_list() {
 }
 
 ##
-## dcc-tools bucket list
-##
-
-# The following function displays the list of buckets
-# installed inside ~/.local/src/dcc-tools/buckets
-
-function bucket_list() {
-
-    readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d)
-
-    for i in "${arrayBucket[@]}"; do
-        printf -- "%s\n" "$(basename "$i")"
-    done
-
-}
-
-##
 ## dcc-tools install <tool>
 ##
-
 function tools_install() {
 
     local tool_name="$1"
@@ -186,7 +161,6 @@ function tools_install() {
 ##
 ## dcc-tools remove <tool>
 ##
-
 function tools_remove() {
 
     local tool="$1"
@@ -216,7 +190,6 @@ function tools_remove() {
 ##
 ## dcc-tools update
 ##
-
 function tools_update() {
 
     printf -- '%s\n' "$TOOLS_DIR"
@@ -227,7 +200,6 @@ function tools_update() {
 ##
 ## dcc-tools remove dcc-tools
 ##
-
 function tool_remove_self() {
 
     # delete symlinks
@@ -247,6 +219,9 @@ function tool_remove_self() {
 
 }
 
+##
+## dcc-tools <arg>
+##
 function tools_manager() {
 
     local mode=$1
@@ -276,7 +251,27 @@ function tools_manager() {
 
 }
 
-function install_bucket() {
+###
+### BUCKET
+###
+
+##
+## dcc-tools bucket list
+##
+function bucket_list() {
+
+    readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d)
+
+    for i in "${arrayBucket[@]}"; do
+        printf -- "%s\n" "$(basename "$i")"
+    done
+
+}
+
+##
+## dcc-tols bucket add <bucket>
+##
+function bucket_add() {
 
     local name="$1"
     local _url="$2"
@@ -297,8 +292,7 @@ function install_bucket() {
 ##
 ## dcc-tools bucket remove <bucket>
 ##
-
-function remove_bucket() {
+function bucket_remove() {
 
     local name=$1
 
@@ -315,6 +309,9 @@ function remove_bucket() {
 
 }
 
+##
+## dcc-tools bucket <arg>...
+##
 function buckets_case() {
 
 for arg in "$@"
@@ -327,12 +324,12 @@ do
             ;;
         add)
             shift
-            install_bucket "$@"
+            bucket_add "$@"
             exit
             ;;
         remove)
             shift
-            remove_bucket "$1"
+            bucket_remove "$1"
             exit
             ;;
         *)
