@@ -162,6 +162,7 @@ function install_tools() {
             bucket="$bucket_candidate"
             tool_name="$(printf -- $tool_name | cut -f2 -d '/')"
             break
+        fi
     done
 
     if [[ -n "$bucket" ]] ; then
