@@ -19,6 +19,12 @@ BUCKETS_DIR="${TOOLS_DIR}/buckets"
 ##
 git_cmd="git -C $TOOLS_DIR"
 
+function myhelp_no_more_info() {
+
+    printf -- "No existe o no tiene más opciones.\n"
+
+}
+
 function myhelp_bucket() {
 
     printf -- "Administra repositorios externos\n"
@@ -32,10 +38,11 @@ function myhelp_install() {
 
     printf -- "Instala localmente un programa\n"
     printf -- "\n"
-    printf -- "  dcc-tools install <bucket>/<program>\n"
+    printf -- "  <program>          Programa específico de Anakena\n"
+    printf -- "  <bucket>/<program> Programa de un bucket externo\n"
     printf -- "\n"
     printf -- 'Los programas se instalan dentro del directorio %s,\n' "$TOOLS_DIR"
-    printf -- 'la ruta %s/.local/bin sólo contiene symlinks a ella\n' "$HOME"
+    printf -- 'la ruta %s sólo contiene symlinks a ella.\n' "$HOME/.local/bin"
 
 }
 
@@ -43,7 +50,7 @@ function myhelp_remove() {
 
     printf -- "Quita un programa instalado localmente\n"
     printf -- "\n"
-    printf -- "  dcc-tools remove <program>\n"
+    printf -- "  <program> Programa a quitar de la cuenta local\n"
     printf -- "\n"
     printf -- "No incluir el prefijo del bucket, se encontrará\n"
     printf -- "automáticamente siguiendo la ruta del symlink\n"
@@ -54,33 +61,39 @@ function myhelp() {
 
     local tool="$1"
 
-    if [[ $tool == "bucket" ]] ; then
-        myhelp_bucket
-        exit
+    if [[ -n $tool ]] ; then
 
-    elif [[ $tool == "install" ]] ; then
-        myhelp_install
-        exit
-
-    elif [[ $tool == "remove" ]] ; then
-        myhelp_remove
-        exit
+        case "$tool" in
+            bucket)
+                myhelp_bucket
+                exit
+                ;;
+            install)
+                myhelp_install
+                exit
+                ;;
+            remove)
+                myhelp_remove
+                exit
+                ;;
+            *)
+                myhelp_no_more_info
+                exit
+                ;;
+        esac
     fi
 
     printf -- "Administrador de paquetes locales para el servidor del dcc\n"
     printf -- "\n"
-    printf -- "  bucket      Administra repositorios externos **\n"
+    printf -- "  bucket      Administra repositorios externos\n"
     printf -- "  git         Ejecuta git dentro del repositorio principal\n"
     printf -- "  help        Imprime esta ayuda\n"
-    printf -- "  install     Instala un programa **\n"
+    printf -- "  install     Instala un programa\n"
     printf -- "  list        Lista los programas instalados\n"
-    printf -- "  os-release  Información sobre el servidor\n"
-    printf -- "  pull        Actualiza el repositorio principal\n"
-    printf -- "  remove      Quita un programa **\n"
-    printf -- "  update      Actualiza todos los repositorios\n"
+    printf -- "  remove      Quita un programa\n"
+    printf -- "  update      Actualiza dcc-tools\n"
     printf -- "\n"
-    printf -- "Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,\n"
-    printf -- "actualmente sólo disponibles para los marcados con '**'.\n"
+    printf -- "Vea 'dcc-tools help <command>' para más información del subcomando.\n"
 
 }
 
@@ -356,11 +369,6 @@ do
         git)
             shift
             $git_cmd "$@"
-            exit
-            ;;
-        os-release)
-            shift
-            cat /etc/os-release
             exit
             ;;
         install)
