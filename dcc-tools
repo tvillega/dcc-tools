@@ -14,6 +14,7 @@ LIB_DIR="$HOME/.local/lib"
 SRC_DIR="$HOME/.local/src"
 
 TOOLS_DIR="${SRC_DIR}/dcc-tools"
+BUCKETS_DIR="${LIB_DIR}/dcc-tools"
 
 ##
 ## Important programs with flags
@@ -86,20 +87,45 @@ function myhelp() {
 
 }
 
+##
+## dcc-tools list
+##
+
+# The following function displays the list of programs
+# installed inside ~/.local/bin whose backlinks
+# lead to $TOOLS_DIR, ignoring any other binary of symlink
+
 function list_tools() {
 
-    for i in $(find "$HOME/.local/bin") ; do
-        if [[ -L "$i" ]] ; then
-            og_path=$(readlink "$i")
-            if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
-                printf -- "%s\n" "${og_path##*/}"
-            fi
-            og_basepath=${og_path##*/}
-            og_path=${og_path%/*}
-            if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
-                printf -- "%s\n" "${og_basepath}"
-            fi
+    readarray -t arraySymlink < <(find "$BIN_DIR" -type l)
+
+    for i in "${arraySymlink[@]}"; do
+
+        symlink_target=$(readlink "$i")
+        target_basedir=$(dirname "$symlink_target")
+
+        # This only handles native tools for DCC
+        # that are located inside $TOOLS_DIR
+        # e.g. imprimir, siitoweb
+
+        if [[ "${target_basedir}" == "$TOOLS_DIR" ]] ; then
+            printf -- "%s\n" $(basename "$i")
         fi
+
+        # This only handles tools from buckets
+        # that are located inside $BUCKETS_DIR
+
+        # It needs to strip the base name two time
+        # $HOME/.local/lib/dcc-tools/bucket_dir/program_dir
+        target_basedir=$(dirname "$target_basedir")
+        # $HOME/.local/lib/dcc-tools/bucket_dir
+        target_basedir=$(dirname "$target_basedir")
+        # $HOME/.local/lib/dcc-tools
+
+        if [[ "${target_basedir}" == "$BUCKETS_DIR" ]] ; then
+            printf -- "%s\n" $(basename "$i")
+        fi
+
     done
 
 }
