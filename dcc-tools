@@ -247,7 +247,10 @@ function tools_manager() {
     local mode=$1
     local tool=$2
 
-    if [[ -z $tool ]] ; then
+    if [[ $mode == "list" ]] ; then
+        tools_list
+
+    elif [[ -z $tool ]] ; then
         printf -- "ERROR: no tool selected\n" 1>&2
         exit
 
@@ -260,10 +263,7 @@ function tools_manager() {
         tools_install "${tool}"
 
     elif [[ $mode == "remove" ]] ; then
-        tools_remove "${tools}"
-
-    elif [[ $mode == "list" ]] ; then
-       tools_list
+        tools_remove "${tool}"
     fi
 
 }
