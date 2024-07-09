@@ -255,6 +255,9 @@ function tools_manager() {
     if [[ $mode == "list" ]] ; then
         tools_list
 
+    elif [[ $mode == "update" ]] ; then
+        tools_update
+
     elif [[ -z $tool ]] ; then
         printf -- "ERROR: no tool selected\n" 1>&2
         exit
