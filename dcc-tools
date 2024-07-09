@@ -130,6 +130,23 @@ function list_tools() {
 
 }
 
+##
+## dcc-tools bucket list
+##
+
+# The following function displays the list of buckets
+# installed inside ~/.local/src/dcc-tools/buckets
+
+function bucket_list() {
+
+    readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d)
+
+    for i in "${arrayBucket[@]}"; do
+        printf -- "%s\n" "$(basename "$i")"
+    done
+
+}
+
 function update_tools() {
 
     printf -- '%s\n' "$TOOLS_DIR"
@@ -280,7 +297,7 @@ do
     case $arg in
         list)
             shift
-            list_bucket
+            bucket_list
             exit
             ;;
         add)
