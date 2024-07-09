@@ -109,7 +109,7 @@ function list_tools() {
         # e.g. imprimir, siitoweb
 
         if [[ "${target_basedir}" == "$TOOLS_DIR" ]] ; then
-            printf -- "%s\n" $(basename "$i")
+            printf -- "%s\n" "$(basename "$i")"
         fi
 
         # This only handles tools from buckets
@@ -123,7 +123,7 @@ function list_tools() {
         # $HOME/.local/src/dcc-tools/buckets
 
         if [[ "${target_basedir}" == "$BUCKETS_DIR" ]] ; then
-            printf -- "%s\n" $(basename "$i")
+            printf -- "%s\n" "$(basename "$i")"
         fi
 
     done
