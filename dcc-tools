@@ -151,29 +151,41 @@ function update_tools() {
 
 }
 
-function install_tools() {
+## dcc-tools install <program>
+##
+function tools_install() {
 
     local tool="$1"
+    local bucket=""
 
-    # Detect bucket
-    if [[ "$tool" =~ "/" ]] ; then # found bucket
-        bucket="${tool%%/*}"
-        tool="${tool##*/}"
-        program_path="${TOOLS_DIR}/${bucket}"
-
-    else
-        program_path="${TOOLS_DIR}"
+    if [[ -z $tool ]] ; then
+        printf -- 'ERROR: no tool specified\n'
+        exit
     fi
 
-    # Detect tool-fetch
-    if [[ -f "${program_path}/${tool}-fetch" ]] ; then # found instructions
-        tool_exec="${program_path}/${tool}-fetch"
-        chmod +x "$tool_exec"
-        $tool_exec install "${program_path}"
-    fi
-    chmod +x "${program_path}/${tool}"
+    IFS='/' read -r -a arrayTool <<< "$tool"
 
-    ln -sf "${program_path}/${tool}" "${BIN_DIR}/${tool}"
+    is_bucket=${#arrayTool[@]}
+
+    if [[ $is_bucket -eq 2 ]] ; then
+        bucket="${arrayTool[0]}"
+        tool="${arrayTool[1]}"
+        buckets_tools_install "$bucket" "$tool"
+        return
+
+    elif [[ $is_bucket -gt 2 ]] ; then
+        printf -- 'ERROR: bucket nesting is not supported\n'
+        exit
+    fi
+
+    if [[ ! -f "${TOOLS_DIR}/${tool}" ]] ; then
+        printf -- 'ERROR: %s: unknown tool\n' "$tool" 1>&2
+        exit
+    fi
+
+    chmod +x "${TOOLS_DIR}/${tool}"
+    ln -sf "${TOOLS_DIR}/${tool}" "${BIN_DIR}/${tool}"
+
 }
 
 function self_remove_tools() {
@@ -222,22 +234,47 @@ function remove_tools() {
 
 }
 
-function edit_tools() {
+###
+### BUCKETS
+###
 
-    local mode=$1
-    local tool=$2
+## dcc-tools install <bucket>/<program>
+##
+function buckets_tools_install() {
 
-    if [[ -z $tool ]] ; then
-        printf -- "ERROR: no tool selected\n" 1>&2
-        exit
+    local bucket="$1"
+    local tool="$1"
 
-    elif [[ ! -f "$TOOLS_DIR/$tool" ]] && [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
-        printf -- 'ERROR: %s: unknown tool\n' "$tool" 1>&2
+    local arrayBucket
+    readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
+
+    local bucket_exists=1
+    for i in "${arrayBucket[@]}"; do
+
+        if [[ "${i}" == "${bucket}" ]] ; then
+            local bucket_exists=0
+        fi
+
+    done
+
+    if [[ $bucket_exists -neq 0 ]] ; then
+        printf -- 'ERROR: %s: bucket not found' "$bucket"
         exit
     fi
 
-    if [[ $mode == "install" ]] ; then
-        install_tools "${tool}"
+    local bucket_dir="${BUCKETS_DIR}/${bucket}"
+    if [[ -f "${bucket_dir}/${tool}" ]] ; then
+        # This is a script or binary ready to install
+        chmod +x "${bucket_dir}/${tool}"
+        ln -sf "${bucket_dir}/${tool}" "${BIN_DIR}/${tool}"
+
+    elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
+        # This is the old format to fetch single binary files
+        local tool_fetch="${bucket_dir}/${tool}-fetch"
+        chmod +x "$tool_fetch"
+        mkdir "${bucket_dir}/${tool}_dir"
+        $tool_fetch install "${bucket_dir}/${tool}_dir"
+        ln -sf "${bucket_dir}/${tool}_dir/${tool}" "${BIN_DIR}/${tool}"
     fi
 
 }
@@ -327,7 +364,7 @@ do
             ;;
         install)
             shift
-            edit_tools "install" "$1"
+            tools_install "$1"
             exit
             ;;
         remove)
