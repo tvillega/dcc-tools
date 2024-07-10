@@ -170,7 +170,9 @@ function tools_install() {
     if [[ $is_bucket -eq 2 ]] ; then
         bucket="${arrayTool[0]}"
         tool="${arrayTool[1]}"
+        printf -- 'debug: recognized pair (%s, %s)' "$bucket" "$tool"
         buckets_tools_install "$bucket" "$tool"
+        printf -- 'debug: bucket_tools_install returned'
         return
 
     elif [[ $is_bucket -gt 2 ]] ; then
@@ -258,18 +260,18 @@ function buckets_tools_install() {
     done
 
     if [[ $bucket_exists -ne 0 ]] ; then
-        printf -- 'ERROR: %s: bucket not found' "$bucket"
+        printf -- 'ERROR: %s: bucket not found\n' "$bucket"
         exit
     fi
 
     local bucket_dir="${BUCKETS_DIR}/${bucket}"
     if [[ -f "${bucket_dir}/${tool}" ]] ; then
-        # This is a script or binary ready to install
+        printf -- 'This is a script or binary ready to install\n'
         chmod +x "${bucket_dir}/${tool}"
         ln -sf "${bucket_dir}/${tool}" "${BIN_DIR}/${tool}"
 
     elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
-        # This is the old format to fetch single binary files
+        printf -- 'This is the old format to fetch single binary files\n'
         local tool_fetch="${bucket_dir}/${tool}-fetch"
         chmod +x "$tool_fetch"
         mkdir "${bucket_dir}/${tool}_dir"
