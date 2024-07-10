@@ -337,7 +337,7 @@ do
             ;;
         list)
             shift
-            list_tools
+            tools_list
             exit
             ;;
         bucket)
