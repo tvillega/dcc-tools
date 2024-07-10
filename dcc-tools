@@ -281,6 +281,8 @@ function buckets_tools_install() {
         ln -sf "${bucket_dir}/${tool}_dir/${tool}" "${BIN_DIR}/${tool}"
     fi
 
+    chmod +x "${BIN_DIR}/${tool}"
+
 }
 
 function install_bucket() {
