@@ -46,17 +46,26 @@ function myhelp() {
 
     local tool="$1"
 
-    if [[ $tool == "bucket" ]] ; then
-        myhelp_bucket
-        exit
+    if [[ -n $tool ]] ; then
 
-    elif [[ $tool == "install" ]] ; then
-        myhelp_install
-        exit
-
-    elif [[ $tool == "remove" ]] ; then
-        myhelp_remove
-        exit
+        case "$tool" in
+            bucket)
+                myhelp_bucket
+                exit
+                ;;
+            install)
+                myhelp_install
+                exit
+                ;;
+            remove)
+                myhelp_remove
+                exit
+                ;;
+            *)
+                printf -- "No hay más información disponible."
+                exit
+                ;;
+        esac
     fi
 
     printf -- "Administrador de paquetes locales para el servidor del dcc\n"
