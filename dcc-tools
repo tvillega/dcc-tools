@@ -180,6 +180,48 @@ function myhelp() {
 
 }
 
+###
+### AUXILIAR
+###
+
+function aux_tool_exists() {
+
+    local tool="$1"
+    local bucket="$2"
+
+    if [[ "$bucket" == "main" ]] ; then
+        this_tool_dir="${TOOLS_DIR}"
+
+    else
+        this_tool_dir="${BUCKETS_DIR}/${bucket}"
+    fi
+
+    if [[ -f "${this_tool_dir}/${tool}" || -f "${this_tool_dir}/${tool}-fetch"]] ; then
+        return 0
+
+    else
+        return 1
+    fi
+
+}
+
+function aux_bucket_exists() {
+
+    local bucket="$1"
+
+    if [[ -d "${BUCKETS_DIR}/${bucket}" ]] ; then
+        return 0
+
+    else
+        return 1
+    fi
+
+}
+
+###
+### TOOLS
+###
+
 ##
 ## dcc-tools list
 ##
@@ -320,18 +362,33 @@ function tool_remove_self() {
 ##
 function tools_manager() {
 
-    local mode=$1
-    local tool=$2
+    local mode="$1"
+    local tool="$2"
+    local bucket=""
 
     if [[ $mode == "list" ]] ; then
         tools_list
 
     elif [[ $mode == "update" ]] ; then
         tools_update
+    fi
 
-    elif [[ -z $tool ]] ; then
+    if [[ -z $tool ]] ; then
         printf -- "ERROR: no tool selected\n" 1>&2
         exit
+    fi
+
+    IFS='/' read -r -a arrayTool <<< "$tool"
+
+    is_bucket=${#arrayTool[@]}
+
+    if [[ $is_bucket -eq 2 ]] ; then
+        bucket="${arrayTool[0]}"
+        tool="${arrayTool[1]}"
+
+    elif [[ $is_bucket -eq 1 ]] ; then
+        bucket="main"
+        tool="${arrayTool[0]}"
 
     elif [[ ! -f "$TOOLS_DIR/$tool" ]] && [[ ! -f "$TOOLS_DIR/${tool}-fetch" ]] ; then
         printf -- 'ERROR: %s: unknown tool\n' "$tool" 1>&2
@@ -339,10 +396,10 @@ function tools_manager() {
     fi
 
     if [[ $mode == "install" ]] ; then
-        tools_install "${tool}"
+        tools_install "${tool}" "${bucket}"
 
     elif [[ $mode == "remove" ]] ; then
-        tools_remove "${tool}"
+        tools_remove "${tool}" "${bucket}"
     fi
 
 }
