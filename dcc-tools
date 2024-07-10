@@ -13,32 +13,38 @@ git_cmd="git -C $TOOLS_DIR"
 
 function myhelp_bucket() {
 
-    printf -- "Administra repositorios externos\n"
-    printf -- "\n"
-    printf -- "  add <name> <git-url> Añade un repositorio externo\n"
-    printf -- "  remove <name>        Quita un repositorio externo\n"
+cat << EOF
+Administra repositorios externos
+
+  add <name> <git-url> Añade un repositorio externo
+  remove <name>        Quita un repositorio externo
+EOF
 
 }
 
 function myhelp_install() {
 
-    printf -- "Instala localmente un programa\n"
-    printf -- "\n"
-    printf -- "  dcc-tools install <bucket>/<program>\n"
-    printf -- "\n"
-    printf -- 'Los programas se instalan dentro del directorio %s,\n' "$TOOLS_DIR"
-    printf -- 'la ruta %s/.local/bin sólo contiene symlinks a ella\n' "$HOME"
+cat << EOF
+Instala localmente un programa
+
+  dcc-tools install <bucket>/<program>
+
+Los programas se instalan dentro del directorio $TOOLS_DIR,
+la ruta $HOME/.local/bin sólo contiene symlinks a ella.
+EOF
 
 }
 
 function myhelp_remove() {
 
-    printf -- "Quita un programa instalado localmente\n"
-    printf -- "\n"
-    printf -- "  dcc-tools remove <program>\n"
-    printf -- "\n"
-    printf -- "No incluir el prefijo del bucket, se encontrará\n"
-    printf -- "automáticamente siguiendo la ruta del symlink\n"
+cat << EOF
+Quita un programa instalado localmente
+
+  dcc-tools remove <program>
+
+No incluir el prefijo del bucket, se encontrará
+automáticamente siguiendo la ruta del symlink.
+EOF
 
 }
 
@@ -68,20 +74,22 @@ function myhelp() {
         esac
     fi
 
-    printf -- "Administrador de paquetes locales para el servidor del dcc\n"
-    printf -- "\n"
-    printf -- "  bucket      Administra repositorios externos **\n"
-    printf -- "  git         Ejecuta git dentro del repositorio principal\n"
-    printf -- "  help        Imprime esta ayuda\n"
-    printf -- "  install     Instala un programa **\n"
-    printf -- "  list        Lista los programas instalados\n"
-    printf -- "  os-release  Información sobre el servidor\n"
-    printf -- "  pull        Actualiza el repositorio principal\n"
-    printf -- "  remove      Quita un programa **\n"
-    printf -- "  update      Actualiza todos los repositorios\n"
-    printf -- "\n"
-    printf -- "Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,\n"
-    printf -- "actualmente sólo disponibles para los marcados con '**'.\n"
+cat << EOF
+Administrador de paquetes locales para el servidor del dcc
+
+  bucket      Administra repositorios externos **
+  git         Ejecuta git dentro del repositorio principal
+  help        Imprime esta ayuda
+  install     Instala un programa **
+  list        Lista los programas instalados
+  os-release  Información sobre el servidor
+  pull        Actualiza el repositorio principal
+  remove      Quita un programa **
+  update      Actualiza todos los repositorios
+
+Vea 'dcc-tools help <command>' para leer acerca de subcomandos especificos,
+actualmente sólo disponibles para los marcados con '**'.
+EOF
 
 }
 
