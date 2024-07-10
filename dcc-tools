@@ -1,12 +1,18 @@
 #!/usr/bin/env bash
 
-# Get location of repository by reading the symlink
-# WARNING: It asumes symlink name as `dcc-tools`
-dt_exec_symlink=$(command -v dcc-tools)
-dt_exec_path=$(readlink "$dt_exec_symlink")
-TOOLS_DIR=${dt_exec_path%%/dcc-tools}
+# Note: dcc-tools will be compilant with
+# XDG Base Directory Specification in the future
 
+# Current implementation will hardcode default paths
+
+##
+## Important paths
+##
 BIN_DIR="$HOME/.local/bin"
+SRC_DIR="$HOME/.local/src"
+
+TOOLS_DIR="${SRC_DIR}/dcc-tools"
+BUCKETS_DIR="${TOOLS_DIR}/buckets"
 
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
