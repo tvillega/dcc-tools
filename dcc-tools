@@ -99,20 +99,41 @@ EOF
 
 }
 
-function list_tools() {
 
-    for i in $(find "$HOME/.local/bin") ; do
-        if [[ -L "$i" ]] ; then
-            og_path=$(readlink "$i")
-            if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
-                printf -- "%s\n" "${og_path##*/}"
-            fi
-            og_basepath=${og_path##*/}
-            og_path=${og_path%/*}
-            if [[ ${og_path%/*} == "$TOOLS_DIR" ]] ; then
-                printf -- "%s\n" "${og_basepath}"
-            fi
+###
+### TOOLS
+###
+
+## dcc-tools list
+##
+function tools_list() {
+
+    local arraySymlink
+    readarray -t arraySymlink < <(find "$BIN_DIR" -type l)
+
+    for i in "${arraySymlink[@]}"; do
+
+        local symlink_target=$(readlink "$i")
+        local target_basedir=$(dirname "$symlink_target")
+
+        # This only handles native tools for DCC
+        # e.g. imprimir, siitoweb
+
+        if [[ "${target_basedir}" == "$TOOLS_DIR" ]] ; then
+            printf -- "%s\n" "$(basename "$i")"
         fi
+
+        # This only handles tools from buckets
+        # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir
+        # -- Already stripped --------------------------^^^^^^^^^^^
+        # $HOME/.local/src/dcc-tools/buckets/bucket_dir
+        target_basedir=$(dirname "$target_basedir")
+        # $HOME/.local/src/dcc-tools/buckets
+
+        if [[ "${target_basedir}" == "$BUCKETS_DIR" ]] ; then
+            printf -- "%s\n" "$(basename "$i")"
+        fi
+
     done
 
 }
