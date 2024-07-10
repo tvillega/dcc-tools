@@ -257,7 +257,7 @@ function buckets_tools_install() {
 
     done
 
-    if [[ $bucket_exists -neq 0 ]] ; then
+    if [[ $bucket_exists -ne 0 ]] ; then
         printf -- 'ERROR: %s: bucket not found' "$bucket"
         exit
     fi
