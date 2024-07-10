@@ -1,9 +1,5 @@
 #!/usr/bin/env bash
 
-# Set branch to clone
-
-branch=${1:-master}
-
 # Create bin directory
 
 if [[ ! -d "$HOME/.local/bin" ]] ; then
@@ -49,12 +45,7 @@ if [[ -d "$HOME/.local/src/dcc-tools" ]] ; then
     rm -rf "$HOME/.local/src/dcc-tools"
 fi
 
-if [[ "$branch" == "master" ]] ; then
-    git clone https://github.com/tvillega/dcc-tools.git "$HOME/.local/src/dcc-tools"
-
-else
-    git clone -b "$branch" https://github.com/tvillega/dcc-tools.git "$HOME/.local/src/dcc-tools"
-fi
+git clone https://github.com/tvillega/dcc-tools.git "$HOME/.local/src/dcc-tools"
 
 # Enable bin
 
