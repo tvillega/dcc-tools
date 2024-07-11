@@ -319,26 +319,28 @@ function remove_bucket() {
 
 function bucket_function() {
 
-case $1 in
-    list)
-        shift
-        list_bucket
-        exit
-        ;;
-    add)
-        shift
-        install_bucket "$@"
-        exit
-        ;;
-    remove)
-        shift
-        remove_bucket "$1"
-        exit
-        ;;
-    *)
-        printf -- 'ERROR: bucket: unknown parameter\n'
-        ;;
-esac
+for arg in "$@"
+do
+    case $arg in
+        list)
+            shift
+            list_bucket
+            exit
+            ;;
+        add)
+            shift
+            install_bucket "$@"
+            exit
+            ;;
+        remove)
+            shift
+            remove_bucket "$1"
+            exit
+            ;;
+        *)
+            ;;
+    esac
+done
 
 }
 
