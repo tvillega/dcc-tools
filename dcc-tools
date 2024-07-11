@@ -124,8 +124,10 @@ function tools_list() {
         fi
 
         # This only handles tools from buckets
+        # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir/program_bin
+        # -- Already stripped --------------------------------------^^^^^^^^^^^
         # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir
-        # -- Already stripped --------------------------^^^^^^^^^^^
+        target_basedir=$(dirname "$target_basedir")
         # $HOME/.local/src/dcc-tools/buckets/bucket_dir
         target_basedir=$(dirname "$target_basedir")
         # $HOME/.local/src/dcc-tools/buckets
