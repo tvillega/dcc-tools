@@ -336,9 +336,12 @@ function bucket_remove() {
 
 function bucket_function() {
 
-for arg in "$@"
-do
-    case $arg in
+    if [[ -z $1 ]] ; then
+        printf -- 'ERROR: no command specified\n'
+        exit
+    fi
+
+    case $1 in
         list)
             shift
             bucket_list
@@ -357,7 +360,6 @@ do
         *)
             ;;
     esac
-done
 
 }
 
