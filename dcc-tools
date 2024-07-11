@@ -285,7 +285,9 @@ function buckets_tools_install() {
 
 }
 
-function install_bucket() {
+## dcc-tools bucket add <bucket>
+##
+function bucket_add() {
 
     local name="$1"
     local _url="$2"
@@ -295,11 +297,11 @@ function install_bucket() {
         exit
 
     elif [[ -z $_url ]] ; then
-        printf -- 'ERROR: %s: no given repository' "$name"
+        printf -- 'ERROR: no repository url given\n' "$name"
         exit
     fi
 
-    $git_cmd submodule add --force "$_url" "$name"
+    $git_cmd clone "$_url" "${BUCKETS_DIR}/${name}"
 
 }
 
@@ -332,7 +334,7 @@ do
             ;;
         add)
             shift
-            install_bucket "$@"
+            bucket_add "$1" "$2"
             exit
             ;;
         remove)
