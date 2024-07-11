@@ -151,7 +151,7 @@ function tools_update() {
     readarray -t arrayBucket < <(dcc-tools bucket list)
 
     for bucket in "${arrayBucket[@]}" ; do
-        printf -- '$s\n' "$bucket"
+        printf -- '%s\n' "$bucket"
         git -C "${BUCKETS_DIR}/${bucket}" pull
     done
 
