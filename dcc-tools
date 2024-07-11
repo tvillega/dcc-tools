@@ -370,56 +370,55 @@ function bucket_function() {
 
 }
 
-for arg in "$@"
-do
-    case $arg in
-        help|-h|--help)
-            shift
-            myhelp "$1"
-            exit
-            ;;
-        pull)
-            shift
-            $git_cmd fetch
-            $git_cmd pull -q
-            exit
-            ;;
-        git)
-            shift
-            $git_cmd "$@"
-            exit
-            ;;
-        os-release)
-            shift
-            cat /etc/os-release
-            exit
-            ;;
-        install)
-            shift
-            tools_install "$1"
-            exit
-            ;;
-        remove)
-            shift
-            tools_remove "$1"
-            exit
-            ;;
-        list)
-            shift
-            tools_list
-            exit
-            ;;
-        bucket)
-            shift
-            bucket_function "$@"
-            exit
-            ;;
-        update)
-            shift
-            tools_update
-            exit
-            ;;
-        *)
-            ;;
-    esac
-done
+case $1 in
+    help|-h|--help)
+        shift
+        myhelp "$1"
+        exit
+        ;;
+    pull)
+        shift
+        $git_cmd fetch
+        $git_cmd pull -q
+        exit
+        ;;
+    git)
+        shift
+        $git_cmd "$@"
+        exit
+        ;;
+    os-release)
+        shift
+        cat /etc/os-release
+        exit
+        ;;
+    install)
+        shift
+        tools_install "$1"
+        exit
+        ;;
+    remove)
+        shift
+        tools_remove "$1"
+        exit
+        ;;
+    list)
+        shift
+        tools_list
+        exit
+        ;;
+    bucket)
+        shift
+        bucket_function "$@"
+        exit
+        ;;
+    update)
+        shift
+        tools_update
+        exit
+        ;;
+    *)
+        myhelp
+        exit'
+        ;;
+esac
