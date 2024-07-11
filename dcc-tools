@@ -285,6 +285,18 @@ function buckets_tools_install() {
 
 }
 
+## dcc-tools bucket list
+##
+function bucket_list() {
+
+    readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d)
+
+    for i in "${arrayBucket[@]}"; do
+        printf -- '%s\n' "$(basename "$i")"
+    done
+
+}
+
 ## dcc-tools bucket add <bucket>
 ##
 function bucket_add() {
@@ -329,7 +341,7 @@ do
     case $arg in
         list)
             shift
-            list_bucket
+            bucket_list
             exit
             ;;
         add)
