@@ -303,16 +303,19 @@ function install_bucket() {
 
 }
 
-function remove_bucket() {
+function bucket_remove() {
 
-    local name="${1:-val}"
+    local name=$1
 
-    if [[ -d "$TOOLS_DIR/$name" ]] ; then
-        $git_cmd submodule deinit -f "$TOOLS_DIR/$name"
-        $git_cmd rm -f "$TOOLS_DIR/$name"
+    if [[ -z $name ]] ; then
+        printf -- 'ERROR: no bucket name given\n'
+        return
+
+    elif [[ -d "${BUCKETS_DIR}/${name}" ]] ; then
+        rm -rf "${BUCKETS_DIR}/${name}"
 
     else
-        printf -- 'ERROR: %s: not found\n' "$name"
+        printf -- 'ERROR: %s: not found' "$name"
     fi
 
 }
@@ -334,7 +337,7 @@ do
             ;;
         remove)
             shift
-            remove_bucket "$1"
+            bucket_remove "$1"
             exit
             ;;
         *)
