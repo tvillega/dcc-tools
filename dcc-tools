@@ -89,7 +89,6 @@ Administrador de paquetes locales para el servidor del dcc
   install     Instala un programa **
   list        Lista los programas instalados
   os-release  Información sobre el servidor
-  pull        Actualiza el repositorio principal
   remove      Quita un programa **
   update      Actualiza todos los repositorios
 
@@ -376,12 +375,6 @@ case $1 in
     help|-h|--help)
         shift
         myhelp "$1"
-        exit
-        ;;
-    pull)
-        shift
-        $git_cmd fetch
-        $git_cmd pull -q
         exit
         ;;
     git)
