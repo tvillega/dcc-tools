@@ -419,6 +419,6 @@ case $1 in
         ;;
     *)
         myhelp
-        exit'
+        exit
         ;;
 esac
