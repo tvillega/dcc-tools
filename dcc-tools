@@ -140,15 +140,19 @@ function tools_list() {
 
 }
 
-function update_tools() {
+## dcc-tools update
+##
+function tools_update() {
 
     printf -- '%s\n' "$TOOLS_DIR"
     $git_cmd pull
-    for dir in $TOOLS_DIR/* ; do
-        if [[ -d "$dir" ]] ; then
-            printf -- '%s\n' "$dir"
-            git -C "$dir" pull
-        fi
+
+    local arrayBucket
+    readarray -t arrayBucket < <(dcc-tools bucket list)
+
+    for bucket in "${arrayBucket[@]}" ; do
+        printf -- '$s\n' "$bucket"
+        git -C "${BUCKETS_DIR}/${bucket}" pull
     done
 
 }
@@ -412,7 +416,7 @@ do
             ;;
         update)
             shift
-            update_tools
+            tools_update
             exit
             ;;
         *)
