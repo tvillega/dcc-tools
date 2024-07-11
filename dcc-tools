@@ -190,7 +190,9 @@ function tools_install() {
 
 }
 
-function self_remove_tools() {
+## dcc-tools remove dcc-tools
+##
+function tools_remove_self() {
 
     # delete symlinks
     printf -- 'Deleting symlinks...'
@@ -209,28 +211,29 @@ function self_remove_tools() {
 
 }
 
-
-function remove_tools() {
+## dcc-tools remove <program>
+##
+function tools_remove() {
 
     local tool="$1"
 
     if [[ $tool == "dcc-tools" ]] ; then
-        self_remove_tools
+        tools_remove_self
+        exit
+
+    elif [[ -z "${BIN_DIR}/${tool}" ]] ; then
+        printf -- 'ERROR: %s: tool not installed\n' "$tool"
         exit
     fi
 
-    symlink_bin=$(command -v "$tool")
+    local symlink_target=$(readlink "${BIN_DIR}/${tool}")
 
-    if [[ -z $symlink_bin ]] || [[ "$symlink_bin" =~ "/usr/" ]]  ; then
-        printf -- 'ERROR: %s: not found\n' "$tool"
-        exit
-    fi
-
-    fullpath_bin=$(readlink "${symlink_bin}")
-
-    if [[ -f "${fullpath_bin}-fetch" ]] ; then
-        rm ${fullpath_bin}
-    fi
+    case $symlink_target in
+        *buckets*)
+            local tool_dir=$(dirname "$symlink_target")
+            rm -rf "$tool_dir"
+            ;;
+    esac
 
     rm "${BIN_DIR}/${tool}"
 
@@ -394,7 +397,7 @@ do
             ;;
         remove)
             shift
-            remove_tools "$1"
+            tools_remove "$1"
             exit
             ;;
         list)
