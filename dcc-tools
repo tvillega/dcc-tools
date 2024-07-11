@@ -341,7 +341,7 @@ function bucket_remove() {
 
 }
 
-function bucket_function() {
+function bucket_case() {
 
     if [[ -z $1 ]] ; then
         printf -- 'ERROR: no command specified\n'
@@ -365,6 +365,8 @@ function bucket_function() {
             exit
             ;;
         *)
+            printf -- 'ERROR: bucket: unknown command\n'
+            exit
             ;;
     esac
 
@@ -409,7 +411,7 @@ case $1 in
         ;;
     bucket)
         shift
-        bucket_function "$@"
+        bucket_case "$@"
         exit
         ;;
     update)
