@@ -271,8 +271,7 @@ function buckets_tools_install() {
     fi
 
     local bucket_dir="${BUCKETS_DIR}/${bucket}"
-    printf -- "${bucket_dir}/${tool}\n"
-    printf -- "${bucket_dir}/${tool}-fetch\n"
+
     if [[ -f "${bucket_dir}/${tool}" ]] ; then
         # This is a script or binary ready to install
         chmod +x "${bucket_dir}/${tool}"
