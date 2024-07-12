@@ -233,7 +233,8 @@ function tools_remove() {
 
     case $symlink_target in
         *buckets*)
-            local tool_dir=$(dirname "$symlink_target")
+            local tool_bin_dir=$(dirname "$symlink_target")
+            local tool_dir=$(dirname "$tool_bin_dir")
             rm -rf "$tool_dir"
             ;;
     esac
