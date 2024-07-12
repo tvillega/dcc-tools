@@ -281,9 +281,9 @@ function buckets_tools_install() {
         # This is the old format to fetch single binary files
         local tool_fetch="${bucket_dir}/${tool}-fetch"
         chmod +x "$tool_fetch"
-        mkdir "${bucket_dir}/${tool}_dir"
-        $tool_fetch install "${bucket_dir}/${tool}_dir"
-        ln -sf "${bucket_dir}/${tool}_dir/${tool}" "${BIN_DIR}/${tool}"
+        mkdir -p "${bucket_dir}/${tool}/bin"
+        $tool_fetch install "${bucket_dir}/${tool}/bin"
+        ln -sf "${bucket_dir}/${tool}/bin/${tool}" "${BIN_DIR}/${tool}"
     fi
 
     chmod +x "${BIN_DIR}/${tool}"
