@@ -294,6 +294,10 @@ function buckets_tools_install() {
 ##
 function bucket_list() {
 
+    if [[ ! -d "$BUCKETS_DIR" ]] ; then
+        exit
+    fi
+
     readarray -t arrayBucket < <(find "$BUCKETS_DIR" -maxdepth 1 -mindepth 1 -type d)
 
     for i in "${arrayBucket[@]}"; do
