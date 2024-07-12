@@ -275,7 +275,7 @@ function buckets_tools_install() {
 
     if [[ -f "${bucket_dir}/${tool}.mkstu" ]] ; then
         # Default format to install programs
-        mkstu "${bucket_dir}/${tool}.mktool" "${bucket_dir}"
+        mkstu "${bucket_dir}/${tool}.mkstu" "${bucket_dir}"
 
     elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
         # Legacy format to fetch single binary files
