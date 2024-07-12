@@ -273,12 +273,17 @@ function buckets_tools_install() {
     local bucket_dir="${BUCKETS_DIR}/${bucket}"
 
     if [[ -f "${bucket_dir}/${tool}" ]] ; then
-        # This is a script or binary ready to install
+        # Script or binary ready to install
         chmod +x "${bucket_dir}/${tool}"
         ln -sf "${bucket_dir}/${tool}" "${BIN_DIR}/${tool}"
 
+    elif [[ -f "${bucket_dir}/${tool}.mktool" ]] ; then
+        # Default format to install programs
+        mktool "${bucket_dir}/${tool}.mktool" "${bucket_dir}"
+        ln -sf "${bucket_dir}/${tool}_dir/${tool}" "${BIN_DIR}/${tool}"
+
     elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
-        # This is the old format to fetch single binary files
+        # Legacy format to install programs
         local tool_fetch="${bucket_dir}/${tool}-fetch"
         chmod +x "$tool_fetch"
         mkdir "${bucket_dir}/${tool}_dir"
