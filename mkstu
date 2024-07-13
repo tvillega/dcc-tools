@@ -1,41 +1,31 @@
 #!/usr/bin/env bash
 
-stubuild="$1"
-printf -- '%s\n' "$stubuild"
+STU_FILE="$1"
 INSTALL_DIR="$2"
-printf -- '%s\n' "$INSTALL_DIR"
+BIN_DIR="$3"
 
-source "$stubuild"
+mkdir -p "$INSTALL_DIR"
+cd $INSTALL_DIR
 
-mkstu_download() {
-    curl --output /dev/null --silent --head --fail "$url"
+source "$STU_FILE"
+
+for _s in "${source[@]}" ; do
+    curl --output /dev/null --silent --head --fail "$_s"
     if [[ $? -ne 0 ]] ; then
         printf -- 'ERROR: %s: url not valid\n' "$(basename $stubuild)" 
     fi
-    (
-    cd "$INSTALL_DIR"
-    pwd
-    curl -s -L -O "$url"
-    )
-}
+    curl -s -L -O "$_s"
+done
 
-mkstu_extract() {
-    tar vxf "${stuname}-${stuver}"
-}
+tar xf "${stuname}-${stuver}.tar.xz"
 
-mkstu_link() {
-
-    for i in "${bin[@]}" ; do
-        ln -sf "${INSTALL_DIR}/bin/$i" "${BIN_DIR}/$i"
-    done
-}
-
-mkstu_download
-
-mkstu_extract
+cd "${stuname}-${stuver}"
 
 build
 
-install
+dinstall
 
-mkstu_link
+for i in ${bin[@]} ; do
+    ln -sf "${INSTALL_DIR}/bin/$i" "${BIN_DIR}/$i"
+    chmod "${BIN_DIR/$i}"
+done
