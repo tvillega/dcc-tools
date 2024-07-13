@@ -273,9 +273,9 @@ function buckets_tools_install() {
 
     local bucket_dir="${BUCKETS_DIR}/${bucket}"
 
-    if [[ -f "${bucket_dir}/${tool}.mkstu" ]] ; then
+    if [[ -f "${bucket_dir}/${tool}.stu" ]] ; then
         # Default format to install programs
-        mkstu "${bucket_dir}/${tool}.mkstu" "${bucket_dir}"
+        mkstu "${bucket_dir}/${tool}.stu" "${bucket_dir}"
 
     elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
         # Legacy format to fetch single binary files
