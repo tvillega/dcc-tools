@@ -71,7 +71,7 @@ mkstu_extract() {
 
     for f in "${arraySourceFiles[@]}" ; do
         bsdtar -xf "$f"
-
+    done
 }
 
 mkstu_symlink() {
