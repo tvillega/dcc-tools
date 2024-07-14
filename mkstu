@@ -86,9 +86,9 @@ mkstu_symlink() {
         if [[ -f $b ]] ; then
             printf -- "${BIN_DIR}/${b}\n"
             ln -sf "${INSTALL_DIR}/bin/$b" "${BIN_DIR}/$b"
-            chmod +x "${BIN_DIR/$b}"
+            chmod +x "${BIN_DIR}/$b"
         else
-            printf -- 'ERROR: %s: binary not found' "$b"
+            printf -- 'ERROR: %s: binary not found\n' "$b"
         fi
     done
 
