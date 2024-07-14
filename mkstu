@@ -83,7 +83,7 @@ mkstu_symlink() {
     printf -- '===> Making symlinks\n' 
 
     for b in ${bin[@]} ; do
-        if [[ -f $b ]] ; then
+        if [[ -f "${INSTALL_DIR}/bin/$b" ]] ; then
             printf -- "${BIN_DIR}/${b}\n"
             ln -sf "${INSTALL_DIR}/bin/$b" "${BIN_DIR}/$b"
             chmod +x "${BIN_DIR}/$b"
