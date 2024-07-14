@@ -4,28 +4,103 @@ STU_FILE="$1"
 INSTALL_DIR="$2"
 BIN_DIR="$3"
 
+arraySourceFiles=()
+
 mkdir -p "$INSTALL_DIR"
 cd $INSTALL_DIR
 
 source "$STU_FILE"
 
-for _s in "${source[@]}" ; do
-    curl --output /dev/null --silent --head --fail "$_s"
-    if [[ $? -ne 0 ]] ; then
-        printf -- 'ERROR: %s: url not valid\n' "$(basename $stubuild)" 
+mkstu_download() {
+
+    has_curl="$(command -v curl)"
+    if [[ -z "$has_curl" ]] ; then
+        printf -- 'ERROR: curl is not installed on the system\n'
+        exit
     fi
-    curl -s -L -O "$_s"
-done
 
-tar xf "${stuname}-${stuver}.tar.xz"
+    mkdir -p "${INSTALL_DIR}/src"
+    cd "${INSTALL_DIR}/src"
 
-cd "${stuname}-${stuver}"
+    for f in "${source[@]}" ; do
 
-build
+        IFS=':'  read -r -a arrayF <<< "$f"
 
-dinstall
+        local has_filename=${#arrayF[@]}
 
-for i in ${bin[@]} ; do
-    ln -sf "${INSTALL_DIR}/bin/$i" "${BIN_DIR}/$i"
-    chmod "${BIN_DIR/$i}"
-done
+        if [[ $has_filename -eq 1 ]] ; then
+            printf -- "ERROR: filename not provided\n"
+            exit
+
+        elif [[ $has_filename -eq 2 ]] ; then
+            printf -- 'WARNING: single colon syntxis will be deprecated\n'
+            local url="${arrayF[1]}"
+            local filename="${arrayF[0]}"
+
+        elif [[ $has_filename -eq 3 ]] ; then
+            local url="${arrayF[2]}"
+            local filename="${arrayF[0]}"
+
+        elif [[ $has_filename -gt 3 ]]  then
+            printf -- 'ERROR: too many arguments in source element\n'
+            exit
+        fi
+
+        curl --output /dev/null --silent --head --fail "$url"
+
+        if [[ $? -ne 0 ]] ; then
+            printf -- 'ERROR: url not valid\n' 
+        fi
+
+        curl -s -L -O "$url"
+
+        arraySourceFiles+=($filename)
+    done
+
+}
+
+mkstu_extract() {
+
+    has_bsdtar="$(command -v bsdtar)"
+    if [[ -z "$has_bsdtar" ]] ; then
+        printf -- 'ERROR: bsdtar is not installed on the system\n'
+        exit
+    fi
+
+    cd "${INSTALL_DIR}/src"
+
+    for f in "${arraySourceFiles[@]}" ; do
+        bsdtar -xf "$f"
+
+}
+
+mkstu_symlink() {
+
+    cd "${INSTALL_DIR}/bin"
+
+    for b in ${bin[@]} ; do
+        if [[ -f $b ]] ; then
+            ln -sf "$b" "${BIN_DIR}/$b"
+            chmod "${BIN_DIR/$b}"
+        else
+            printf -- 'ERROR: %s: binary not found' "$bin_file"
+        fi
+    done
+
+
+}
+
+mkstu_run() {
+
+    cd "${INSTALL_DIR}/src"
+
+    build
+    dinstall
+
+}
+
+mkstu_download
+
+mkstu_extract
+
+mkstu_run
