@@ -82,18 +82,15 @@ mkstu_symlink() {
 
     printf -- '===> Making symlinks\n' 
 
-    cd "${INSTALL_DIR}/bin"
-
     for b in ${bin[@]} ; do
         if [[ -f $b ]] ; then
             printf -- "${BIN_DIR}/${b}\n"
-            ln -sf "$b" "${BIN_DIR}/$b"
+            ln -sf "${INSTALL_DIR}/bin/$b" "${BIN_DIR}/$b"
             chmod +x "${BIN_DIR/$b}"
         else
-            printf -- 'ERROR: %s: binary not found' "$bin_file"
+            printf -- 'ERROR: %s: binary not found' "$b"
         fi
     done
-
 
 }
 
