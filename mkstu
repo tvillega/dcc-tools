@@ -97,13 +97,22 @@ mkstu_symlink() {
 
 }
 
-mkstu_run() {
+mkstu_run_build() {
 
     cd "${INSTALL_DIR}/src"
 
     printf -- '===> Building program\n'
+
     build
+
+}
+
+mkstu_run_install() {
+
+    cd "${INSTALL_DIR}/src"
+
     printf -- '===> Installing program\n'
+
     dinstall
 
 }
@@ -112,6 +121,8 @@ mkstu_download
 
 mkstu_extract
 
-mkstu_run
+mkstu_run_build
+
+mkstu_run_install
 
 mkstu_symlink
