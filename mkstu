@@ -19,40 +19,37 @@ mkstu_download() {
         exit
     fi
 
+    printf -- '===> Downloading sources\n'
+
     mkdir -p "${INSTALL_DIR}/src"
     cd "${INSTALL_DIR}/src"
 
     for f in "${source[@]}" ; do
 
-        IFS=':'  read -r -a arrayF <<< "$f"
+        f=$(printf -- "$f" | sed 's/::/ /')
 
-        local has_filename=${#arrayF[@]}
-
-        if [[ $has_filename -eq 1 ]] ; then
-            printf -- "ERROR: filename not provided\n"
-            exit
-
-        elif [[ $has_filename -eq 2 ]] ; then
-            printf -- 'WARNING: single colon syntxis will be deprecated\n'
-            local url="${arrayF[1]}"
-            local filename="${arrayF[0]}"
-
-        elif [[ $has_filename -eq 3 ]] ; then
-            local url="${arrayF[2]}"
-            local filename="${arrayF[0]}"
-
-        elif [[ $has_filename -gt 3 ]]  then
-            printf -- 'ERROR: too many arguments in source element\n'
-            exit
+        read -a  arrayF <<< $f
+        if [[ ${#arrayF[@]} -ne 2 ]] ; then
+            printf -- 'ERROR: source element accepts exactly two parameters\n'
         fi
+
+        local filename=$(printf -- "$f" | cut -d ' ' -f1 )
+        local url=$(printf -- "$f" | cut -d ' ' -f2 )
 
         curl --output /dev/null --silent --head --fail "$url"
 
         if [[ $? -ne 0 ]] ; then
-            printf -- 'ERROR: url not valid\n' 
+            printf -- 'ERROR: url not valid\n'
+            exit
         fi
 
-        curl -s -L -O "$url"
+        printf -- "source: ${url}\n"
+        curl -L "$url" --output "${INSTALL_DIR}/src/${filename}"
+
+        if [[ $? -ne 0 ]] ; then
+            printf -- 'ERROR: failed to download %s\n' "$filename"
+            exit
+        fi
 
         arraySourceFiles+=($filename)
     done
@@ -67,21 +64,31 @@ mkstu_extract() {
         exit
     fi
 
+    printf -- '===> Extracting sources\n'
+
     cd "${INSTALL_DIR}/src"
 
     for f in "${arraySourceFiles[@]}" ; do
+        if [[ ! -f "${INSTALL_DIR}/src/$f" ]] ; then
+            printf -- "ERROR: not found $f to decompress\n"
+            exit
+        fi
+        printf -- "$f\n"
         bsdtar -xf "$f"
     done
 }
 
 mkstu_symlink() {
 
+    printf -- '===> Making symlinks\n' 
+
     cd "${INSTALL_DIR}/bin"
 
     for b in ${bin[@]} ; do
         if [[ -f $b ]] ; then
+            printf -- "${BIN_DIR}/${b}\n"
             ln -sf "$b" "${BIN_DIR}/$b"
-            chmod "${BIN_DIR/$b}"
+            chmod +x "${BIN_DIR/$b}"
         else
             printf -- 'ERROR: %s: binary not found' "$bin_file"
         fi
@@ -94,7 +101,9 @@ mkstu_run() {
 
     cd "${INSTALL_DIR}/src"
 
+    printf -- '===> Building program\n'
     build
+    printf -- '===> Installing program\n'
     dinstall
 
 }
@@ -104,3 +113,5 @@ mkstu_download
 mkstu_extract
 
 mkstu_run
+
+mkstu_symlink
