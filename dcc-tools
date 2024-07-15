@@ -127,7 +127,7 @@ function tools_list() {
         # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir
 
         if [[ -f "${target_basedir}/.STUINFO" ]] ; then
-            printf -- "%s\n" "${basebane "$i")"
+            printf -- "%s\n" "$(basename "$i")"
         fi
 
         target_basedir=$(dirname "$target_basedir")
