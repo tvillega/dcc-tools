@@ -115,25 +115,17 @@ function tools_list() {
         local symlink_target=$(readlink "$i")
         local target_basedir=$(dirname "$symlink_target")
 
-        # This only handles native tools for DCC
-        # e.g. imprimir, siitoweb
-
         if [[ "${target_basedir}" == "$TOOLS_DIR" ]] ; then
             printf -- "%s\n" "$(basename "$i")"
         fi
 
-        # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir/program_bin
-        # -- Already stripped --------------------------------------^^^^^^^^^^^
-        # $HOME/.local/src/dcc-tools/buckets/bucket_dir/program_dir
+        target_basedir=$(dirname "$target_basedir")
 
         if [[ -f "${target_basedir}/.STUINFO" ]] ; then
             printf -- "%s\n" "$(basename "$i")"
         fi
 
         target_basedir=$(dirname "$target_basedir")
-        # $HOME/.local/src/dcc-tools/buckets/bucket_dir
-        target_basedir=$(dirname "$target_basedir")
-        # $HOME/.local/src/dcc-tools/buckets
 
         if [[ "${target_basedir}" == "$BUCKETS_DIR" ]] ; then
             printf -- "%s\n" "$(basename "$i")"
