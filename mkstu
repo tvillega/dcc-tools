@@ -1,16 +1,5 @@
 #!/usr/bin/env bash
 
-STU_FILE="$1"
-INSTALL_DIR="$2"
-BIN_DIR="${HOME}/.local/bin"
-
-arraySourceFiles=()
-
-mkdir -p "$INSTALL_DIR"
-cd $INSTALL_DIR
-
-source "$STU_FILE"
-
 mkstu_download() {
 
     has_curl="$(command -v curl)"
@@ -114,12 +103,42 @@ mkstu_run_install() {
 
 }
 
-mkstu_download
+mkstu_init() {
 
-mkstu_extract
+    BIN_DIR="${HOME}/.local/bin"
 
-mkstu_run_build
+    arraySourceFiles=()
 
-mkstu_run_install
+    mkdir -p "$INSTALL_DIR"
+    cd $INSTALL_DIR
 
-mkstu_symlink
+    source "$STU_FILE"
+
+    mkstu_download
+
+    mkstu_extract
+
+    mkstu_run_build
+
+    mkstu_run_install
+
+    mkstu_symlink
+
+}
+
+for arg in "$@" ; do
+    case $arg in
+        --dest)
+            shift
+            INSTALL_DIR="$1"
+            shift
+            ;;
+        --file)
+            shift
+            STU_FILE="$1"
+            shift
+            ;;
+    esac
+done
+
+mkstu_init "$@"
