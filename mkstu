@@ -83,6 +83,16 @@ mkstu_symlink() {
 
 }
 
+mkstu_info() {
+
+    cd "${INSTALLER_DIR}"
+
+    touch .STUINFO
+    printf -- 'name=%s\n' "$stuname" >> .STUINFO
+    printf -- 'ver=%s\n' "$stuver"   >> .STUINFO
+
+}
+
 mkstu_run_build() {
 
     cd "${INSTALL_DIR}/src"
@@ -123,6 +133,8 @@ mkstu_init() {
     mkstu_run_install
 
     mkstu_symlink
+
+    mkstu_info
 
 }
 
