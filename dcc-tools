@@ -231,10 +231,10 @@ function tools_remove() {
         fi
 
     else
-        target_basedir=$(dirname "$target_basedir")
-        local target_basename=$(basename "$target_basedir")
 
-        if [[ "${target_basename}" == "${tool}" ]] ; then
+        local target_basedir="${BUCKETS_DIR}/${tool}"
+
+        if [[ -d "${target_basedir}" ]] ; then
 
             local arraySymlink
             readarray -t arrayBin < <(find "${target_basedir}/bin")
