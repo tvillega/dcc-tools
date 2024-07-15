@@ -220,17 +220,38 @@ function tools_remove() {
         tools_remove_self
         exit
 
-    elif [[ -z "${BIN_DIR}/${tool}" ]] ; then
-        printf -- 'ERROR: %s: tool not installed\n' "$tool"
-        exit
+    elif [[ -f "${BIN_DIR}/${tool}" ]] ; then
+
+        local symlink_target=$(readlink "${BIN_DIR}/${tool}")
+        local target_basedir=$(dirname "$symlink_target")
+
+        if [[ "${target_basedir}" == "$TOOLS_DIR" ]] ; then
+            rm "${BIN_DIR}/${tool}"
+            return
+        fi
+
+        target_basedir=$(dirname "$target_basedir")
+        local target_basename=$(basename "$target_basedir")
+
+        if [[ "${target_basename}" == "${tool}" ]] ; then
+
+            local arraySymlink
+            readarray -t arrayBin < <(find "${target_basedir}/bin")
+
+            for b in "${arrayBin[@]}" ; do
+                b=$(basename $b)
+                if [[ -f "${BIN_DIR}/$b" ]] ; then
+                    rm "${BIN_DIR}/$b"
+                fi
+            done
+
+            rm -rf "$target_basedir"
+
+        fi
+
+    else
+        printf -- 'ERROR: %s: tool not found\n' "$tool"
     fi
-
-    local symlink_target=$(readlink "${BIN_DIR}/${tool}")
-    local target_basedir=$(dirname "$symlink_target")
-    local target_basedir=$(dirname "$target_basedir")
-
-    rm -rf "$target_basedir"
-    rm "${BIN_DIR}/${tool}"
 
 }
 
