@@ -226,15 +226,10 @@ function tools_remove() {
     fi
 
     local symlink_target=$(readlink "${BIN_DIR}/${tool}")
+    local target_basedir=$(dirname "$symlink_target")
+    local target_basedir=$(dirname "$target_basedir")
 
-    case $symlink_target in
-        *buckets*)
-            local tool_bin_dir=$(dirname "$symlink_target")
-            local tool_dir=$(dirname "$tool_bin_dir")
-            rm -rf "$tool_dir"
-            ;;
-    esac
-
+    rm -rf "$target_basedir"
     rm "${BIN_DIR}/${tool}"
 
 }
