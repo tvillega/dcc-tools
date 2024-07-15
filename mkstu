@@ -2,7 +2,7 @@
 
 STU_FILE="$1"
 INSTALL_DIR="$2"
-BIN_DIR="$3"
+BIN_DIR="${HOME}/.local/bin"
 
 arraySourceFiles=()
 
