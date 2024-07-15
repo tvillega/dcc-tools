@@ -85,7 +85,7 @@ mkstu_symlink() {
 
 mkstu_info() {
 
-    cd "${INSTALLER_DIR}"
+    cd "${INSTALL_DIR}"
 
     touch .STUINFO
     printf -- 'name=%s\n' "$stuname" >> .STUINFO
