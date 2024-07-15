@@ -230,6 +230,7 @@ function tools_remove() {
             return
         fi
 
+    else
         target_basedir=$(dirname "$target_basedir")
         local target_basename=$(basename "$target_basedir")
 
@@ -246,12 +247,12 @@ function tools_remove() {
             done
 
             rm -rf "$target_basedir"
-
+            return
+        else
+            printf -- 'ERROR: %s: tool not found\n' "$tool"
         fi
-
-    else
-        printf -- 'ERROR: %s: tool not found\n' "$tool"
     fi
+
 
 }
 
