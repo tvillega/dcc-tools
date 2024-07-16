@@ -124,9 +124,10 @@ mkstu_init() {
 
     source "$STU_FILE"
 
-    mkstu_download
-
-    mkstu_extract
+    if [[ -n "${source[@]}" ]] ; then
+        mkstu_download
+        mkstu_extract
+    fi
 
     mkstu_run_build
 
