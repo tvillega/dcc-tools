@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
 
-# Note: dcc-tools will be compilant with
-# XDG Base Directory Specification in the future
-
-# Current implementation will hardcode default paths
-
 ##
 ## Important paths
 ##
@@ -13,6 +8,7 @@ SRC_DIR="$HOME/.local/src"
 
 TOOLS_DIR="${SRC_DIR}/dcc-tools"
 BUCKETS_DIR="${TOOLS_DIR}/buckets"
+SYSROOT_DIR="${TOOLS_DIR}/sysroot"
 
 # Set git command
 git_cmd="git -C $TOOLS_DIR"
@@ -289,7 +285,7 @@ function buckets_tools_install() {
     if [[ -f "${bucket_dir}/${tool}.stu" ]] ; then
         # Default format to install programs
         mkstu --file "${bucket_dir}/${tool}.stu" \
-              --dest "${bucket_dir}/${tool}"
+              --dest "${SYSROOT_DIR}/opt/${tool}"
 
     elif [[ -f "${bucket_dir}/${tool}-fetch" ]] ; then
         # Legacy format to fetch single binary files
@@ -297,7 +293,7 @@ function buckets_tools_install() {
         chmod +x "$tool_fetch"
         mkdir -p "${bucket_dir}/${tool}/bin"
         $tool_fetch install "${bucket_dir}/${tool}/bin"
-        ln -sf "${bucket_dir}/${tool}/bin/${tool}" "${BIN_DIR}/${tool}"
+        ln -sf "${SYSROOT_DIR}/opt/${tool}/bin/${tool}" "${BIN_DIR}/${tool}"
         chmod +x "${BIN_DIR}/${tool}"
     fi
 
