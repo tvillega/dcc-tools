@@ -39,3 +39,14 @@ function bucket_add() {
     git clone "$url" "${CS_BUCKETS_DIR}/${name}"
 
 }
+
+function bucket_list() {
+
+    local arrayBuckets=()
+    readarray -t arrayBuckets < <(find "${CS_BUCKETS_DIR}" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
+
+    for b in "${arrayBuckets[@]}" ; do
+        printf -- '%s\n' "$b"
+    done
+
+}
