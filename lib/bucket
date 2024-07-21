@@ -10,7 +10,7 @@ function bucket_add() {
         exit
     fi
 
-    local is_official=$(grep "$name" $CS_BUCKETS_FILE)
+    local is_official=$(grep "$name" $CS_KNOWN_BUCKETS)
 
     if [[ -z $url && -z $is_official ]] ; then
         printf -- 'error: two parameters required\n'
@@ -66,7 +66,7 @@ function bucket_remove() {
     fi
 
     local arrayBuckets=()
-    readarray -t arrayBuckets < <(dcc-tools bucket list)
+    readarray -t arrayBuckets < <($CS_NAME bucket list)
 
     if [[ "${#arrayBuckets[@]}" -eq 0 ]] ; then
         printf -- 'error: there are no buckets added\n'
