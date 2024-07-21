@@ -34,5 +34,6 @@ case "$@" in
         ;;
     *)
         printf -- 'error: %s: unknown command\n' "$1"
+        exit
         ;;
 esac
