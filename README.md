@@ -25,9 +25,9 @@ Yes, it is.
 
 > tl;dr: standardization
 
-DCC means *Department of Computer Science*. This program was orginally developed
-to easily distribute scripts that wrapped complex commands for common chores
-inside the server of DCC at Universidad de Chile.
+This program was orginally developed to easily distribute scripts that wrapped
+complex commands for common chores inside the server of Computer Science
+Department (DCC) at Universidad de Chile..
 
 Realistically speaking, a non-root package manager breaks the multi-user scheme
 of a GNU/Linux system. The separation between privileged and unprivileged users
