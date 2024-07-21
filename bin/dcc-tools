@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
+set -o allexport
 CS_ROOT="$HOME/.local/opt"
 CS_CFG_FILE="$HOME/.local/opt/etc/dcc-tools.cfg"
+set +o allexport
 
 for arg in "$@" ; do
     case arg in
@@ -26,20 +28,9 @@ else
     set +o allexport
 fi
 
-function tools_list() {
-
-    local symlinkArray=()
-    readarray -t symlinkArray < <(find "${CS_ROOT}/bin" -type l)
-
-    for b in "${symlinkArray[@]}" ; do
-        printf -- '%s\n' "$(basename $b)"
-    done
-
-}
-
 case "$@" in
     list)
-        tools_list
+        exec "${CS_ROOT}/dcc-tools/libexec/list"
         ;;
     *)
         printf -- 'error: %s: unknown command\n' "$1"

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+source "${CS_ROOT}/dcc-tools/lib/list"
+
+tools_list
