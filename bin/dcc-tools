@@ -3,6 +3,8 @@
 set -o allexport
 CS_ROOT="$HOME/.local/opt"
 CS_CFG_FILE="${CS_ROOT}/etc/dcc-tools.cfg"
+CS_BUCKETS_FILE="${CS_ROOT}/dcc-tools/buckets"
+CS_BUCKETS_DIR="${CS_ROOT}/buckets"
 set +o allexport
 
 for arg in "$@" ; do
@@ -28,9 +30,13 @@ else
     set +o allexport
 fi
 
-case "$@" in
+case "$1" in
     list)
         exec "${CS_ROOT}/dcc-tools/libexec/list"
+        ;;
+    bucket)
+        shift
+        exec "${CS_ROOT}/dcc-tools/libexec/bucket" "$@"
         ;;
     *)
         printf -- 'error: %s: unknown command\n' "$1"

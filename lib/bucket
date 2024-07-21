@@ -1,0 +1,41 @@
+#!/usr/bin/env bash
+
+function bucket_add() {
+
+    local name="$1"
+    local url="$2"
+
+    if [[ -z $name ]] ; then
+        printf -- 'error: bucket name not provided\n'
+        exit
+    fi
+
+    local is_official=$(grep "$name" $CS_BUCKETS_FILE)
+
+    if [[ -z $url && -z $is_official ]] ; then
+        printf -- 'error: two parameters required\n'
+        exit
+
+    elif [[ -n $url && -z $is_official ]] ; then
+        local protocol=$(printf -- "$url" | cut -d ':' -f1)
+        case $protocol in
+            https|http)
+                ;;
+            *)
+                printf -- 'error: %s: protocol not supported\n' "$protocol"
+                exit
+                ;;
+        esac
+
+    elif [[ -z $url && -n $is_official ]] ; then
+        url="${is_official##*::}"
+        printf -- 'info: known bucket\n'
+        printf -- 'info: %s\n' "$url"
+
+    elif [[ -n $url && -n $is_official ]] ; then
+        printf -- 'warning: overriding a known bucket\n'
+    fi
+
+    git clone "$url" "${CS_BUCKETS_DIR}/${name}"
+
+}

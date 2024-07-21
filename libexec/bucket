@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+source "${CS_ROOT}/dcc-tools/lib/bucket"
+
+case "$1" in
+    add)
+        shift
+        bucket_add "$@"
+        exit
+        ;;
+    remove)
+
+        shift
+        bucket_remove "$@"
+        exit
+        ;;
+    list)
+        shift
+        bucket_list "$@"
+        exit
+        ;;
+    *)
+        printf -- 'error: %s: unknown command\n' "$1"
+        exit
+        ;;
+esac
