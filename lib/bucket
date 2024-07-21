@@ -50,3 +50,30 @@ function bucket_list() {
     done
 
 }
+
+function bucket_remove() {
+
+    local target="$1"
+
+    if [[ -z "$target" ]] ; then
+        printf -- 'error: bucket name not specified\n'
+        exit
+    fi
+
+    local arrayBuckets=()
+    readarray -t arrayBuckets < <(dcc-tools bucket list)
+
+    if [[ "${#arrayBuckets[@]}" -eq 0 ]] ; then
+        printf -- 'error: there are no buckets added\n'
+        exit
+    fi
+
+    for b in "${arrayBuckets[@]}" ; do
+        if [[ "$target" == "$b" ]] ; then
+            rm -rf "${CS_BUCKETS_DIR}/${target}"
+            printf -- 'Bucket %s removed succesfully\n' "$target"
+            return
+        fi
+    done
+
+}
