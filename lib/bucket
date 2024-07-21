@@ -45,6 +45,11 @@ function bucket_list() {
     local arrayBuckets=()
     readarray -t arrayBuckets < <(find "${CS_BUCKETS_DIR}" -maxdepth 1 -mindepth 1 -type d -printf "%f\n")
 
+    if [[ "${#arrayBuckets[@]}" -eq 0 ]] ; then
+        printf -- 'There are no buckets installed\n'
+        exit
+    fi
+
     for b in "${arrayBuckets[@]}" ; do
         printf -- '%s\n' "$b"
     done
