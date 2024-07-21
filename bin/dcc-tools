@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+CS_ROOT="$HOME/.local/opt"
+CS_CFG_FILE="$HOME/.local/opt/etc/dcc-tools.cfg"
+
+for arg in "$@" ; do
+    case arg in
+        --config)
+            shift
+            export CS_CFG_FILE="$1"
+            shift
+            ;;
+        --*|-*)
+            printf -- 'error: %s: unkown option\n' "$1"
+            exit
+            ;;
+    esac
+done
+
+if [[ ! -f "$CS_CFG_FILE" ]] ; then
+    printf -- 'error: configuration file not found\n'
+
+else
+    set -o allexport
+    source "$CS_CFG_FILE"
+    set +o allexport
+fi
+
+function tools_list() {
+
+    local symlinkArray=()
+    readarray -t symlinkArray < <(find "${CS_ROOT}/bin" -type l)
+
+    for b in "${symlinkArray[@]}" ; do
+        printf -- '%s\n' "$(basename $b)"
+    done
+
+}
+
+case "$@" in
+    list)
+        tools_list
+        ;;
+    *)
+        printf -- 'error: %s: unknown command\n' "$1"
+        ;;
+esac
