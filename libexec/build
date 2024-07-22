@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+source "${CS_ROOT}/${CS_NAME}/lib/build"
+
+function build_program() {
+
+    local raw_input="$1"
+
+    local sanitized_input=$(get_bucket_and_program "$raw_input")
+
+    if [[ $? -eq 3 ]] ; then
+        printf -- 'error: nested buckets not allowed\n'
+        exit
+    fi
+
+    local bucket=$(printf -- "$sanitized_input" | cut -d ' ' -f1)
+    local program=$(printf -- "$sanitized_input" | cut -d ' ' -f2)
+
+    if [[ ! -d "${CS_BUCKETS_DIR}/${bucket}" ]] ; then
+        printf -- 'error: %s: bucket not found\n' "$bucket"
+        exit
+    fi
+
+    if [[ ! -d "${CS_BUCKETS_DIR}/${bucket}/${program}" ]] ; then
+        printf -- 'error: %s: program not found\n' "$program"
+        exit
+    fi
+
+    local startdir="${CS_BUCKETS_DIR}/${bucket}/${program}"
+
+    source "${startdir}/PKGBUILD"
+
+    set -o allexport
+    srcdir="${startdir}/src"
+    pkgdir="${startdir}/pkg"
+    set +o allexport
+
+    mkdir -p "$srcdir"
+    mkdir -p "$pkgdir"
+
+    cd "${startdir}"
+
+    local arraySourceFiles=()
+
+    if [[ -n "${source[@]}" ]] ; then
+        run_download
+        run_extract
+    fi
+
+    run_build
+    run_package
+
+    run_cleanup $CLEAN_SRC
+
+}
+
+CLEAN_SRC=1
+
+for arg in "$@" ; do
+    case arg in
+        --keep|-k)
+            CLEAN_SRC=0
+            shift
+            ;;
+        --*|-*)
+            printf -- 'error: %s: unkown option\n' "$1"
+            exit
+            ;;
+    esac
+done
+
+if [[ ${#@} -eq 0 ]] ; then
+    printf -- 'error: program name not given\n'
+    exit
+fi
+
+build_program "$1"

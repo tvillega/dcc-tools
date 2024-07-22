@@ -1,0 +1,111 @@
+#!/usr/bin/env bash
+
+function get_bucket_and_program() {
+
+    local raw_input="$1"
+    local bucket=$default_bucket
+    local program=""
+
+    IFS='/' read -r -a arrayInput <<< "$raw_input"
+
+    if [[ "${#arrayInput[@]}" -eq 1 ]] ; then
+        program="${arrayInput[0]}"
+
+    elif [[ "${#arrayInput[@]}" -eq 2 ]] ; then
+        bucket="${arrayInput[0]}"
+        program="${arrayInput[1]}"
+
+    elif [[ "${#arrayInput[@]}" -ge 3 ]] ; then
+        return 3
+    fi
+
+    printf -- "${bucket} ${program}"
+
+}
+
+function run_download() {
+
+    printf -- '==> Downloading sources...\n'
+
+    for f in "${source[@]}" ; do
+
+        f=$(printf -- "$f" | sed 's/::/ /')
+
+        read -a arrayF <<< $f
+        if [[ ${#arrayF[@]} -ne 2 ]] ; then
+            printf -- 'error: source element accepts exactly two parameters\n'
+        fi
+
+        local filename=$(printf -- "$f" | cut -d ' ' -f1 )
+        local url=$(printf -- "$f" | cut -d ' ' -f2 )
+
+        printf -- '%s\n' "$url"
+        curl -L "$url" --output "${srcdir}/${filename}"
+
+        if [[ $? -ne 0 ]] ; then
+            printf -- 'error: failed to download %s\n' "$filename"
+            exit
+        fi
+
+        arraySourceFiles+=($filename)
+    done
+
+}
+
+function run_extract() {
+
+    printf -- '==> Extracting sources...\n'
+
+    has_bsdtar="$(command -v bsdtar)"
+    if [[ -z "$has_bsdtar" ]] ; then
+        printf -- 'warning: bsdtar is not installed\n'
+        printf -- 'warning: using tar as fallback\n'
+        printf -- 'warning: some archives may not be supported\n'
+        sleep 2
+    fi
+
+    for f in "${arraySourceFiles[@]}" ; do
+        if [[ ! -f "${srcdir}/$f" ]] ; then
+            printf -- 'error: %s: file not found\n' "$f"
+            exit
+        fi
+        printf -- "$f\n"
+        if [[ -n $has_bsdtar ]] ; then
+            bsdtar -xf "${srcdir}/$f" -C "${srcdir}"
+        else
+            tar -xf "${srcdir}/$f" -C "${srcdir}"
+        fi
+    done
+
+}
+
+function run_build() {
+
+    printf -- '==> Building program...\n'
+    build
+
+}
+
+function run_package() {
+
+    printf -- '==> Packaging program...\n'
+    package
+
+    tar -cf "${CS_PACKAGES_DIR}/${pkgname}-${pkgver}.tar.xz" -C "${pkgdir}" .
+
+}
+
+function run_cleanup() {
+
+    local req="$1"
+
+    rm -rf "$pkgdir"
+
+    if [[ $req -eq 0 ]] ; then
+        return
+
+    elif [[ $req -eq 1 ]] ; then
+        rm -rf "$srcdir"
+    fi
+
+}
