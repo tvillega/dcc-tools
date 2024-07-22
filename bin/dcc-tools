@@ -54,6 +54,10 @@ case "$1" in
         shift
         exec "${CS_ROOT}/${CS_NAME}/libexec/build" "$@"
         ;;
+    install)
+        shift
+        exec "${CS_ROOT}/${CS_NAME}/libexec/install" "$@"
+        ;;
     *)
         printf -- 'error: %s: unknown command\n' "$1"
         exit

@@ -1,0 +1,63 @@
+#!/usr/bin/env bash
+
+target_package="$1"
+
+arrayPkgFiles=()
+readarray -t arrayPkgFiles < <(find "${CS_PACKAGES_DIR}" -type f -printf '%f\n')
+
+if [[ "${#arrayPkgFiles[@]}" -eq 0 ]] ; then
+    printf -- 'No packages available\n'
+    exit
+fi
+
+arrayTargetPkg=()
+
+for pkg in "${arrayPkgFiles[@]}" ; do
+
+    pkg_name_ver="${pkg%.tar.xz}"
+    pkg_name="${pkg%-*}"
+
+    if [[ "$pkg_name" == "$target_package" ]] ; then
+        arrayTargetPkg+=($pkg_name_ver)
+    fi
+
+done
+
+if [[ "${#arrayTargetPkg[@]}" -eq 0 ]] ; then
+    printf -- 'Package not found for %s\n' "$target_package"
+    exit
+
+elif [[ "${#arrayTargetPkg[@]}" -eq 1 ]] ; then
+    printf -- 'Package version is  %s. Proceed? [y|n] ' "${arrayTargetPkg[0]##*-}"
+    read -r ans
+
+    if [[ "$ans" == 'y' ]] ; then
+        printf -- 'Installing %s\n' "${arrayTargetPkg[0]}"
+
+    else
+        exit
+    fi
+
+elif [[ "${#arrayTargetPkg[@]}" -gt 1 ]] ; then
+
+    declare -i count
+    count=0
+
+    for pkg in "${arrayTargetPkg[@]}" ; do
+        printf -- "[$count] %s\n" "$pkg"
+        count+=1
+    done
+
+    unset number
+    until [[ $number == +([0-9]) ]] ; do
+        read -r -p 'Choose an index number: ' number
+    done
+
+    if [[ $number -gt $(($count-1)) ]] ; then
+        printf -- 'error: index out of rage\n'
+        exit
+
+    else
+        echo "Installing ${arrayTargetPkg[$number]}"
+    fi
+fi
