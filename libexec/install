@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+source "${CS_ROOT}/${CS_NAME}/lib/install"
+
 target_package="$1"
 
 arrayPkgFiles=()
@@ -28,17 +30,18 @@ if [[ "${#arrayTargetPkg[@]}" -eq 0 ]] ; then
     exit
 
 elif [[ "${#arrayTargetPkg[@]}" -eq 1 ]] ; then
-    printf -- 'Package version is  %s. Proceed? [y|n] ' "${arrayTargetPkg[0]##*-}"
+    printf -- 'Package version is %s. Proceed? [y|n] ' "${arrayTargetPkg[0]##*-}"
     read -r ans
 
-    if [[ "$ans" == 'y' ]] ; then
-        printf -- 'Installing %s\n' "${arrayTargetPkg[0]}"
-
-    else
+    if [[ "$ans" != 'y' ]] ; then
         exit
     fi
 
+    unpack_tarball "${arrayTargetPkg[0]}"
+
 elif [[ "${#arrayTargetPkg[@]}" -gt 1 ]] ; then
+
+    printf -- '==> Multiple packages found\n'
 
     declare -i count
     count=0
@@ -58,6 +61,6 @@ elif [[ "${#arrayTargetPkg[@]}" -gt 1 ]] ; then
         exit
 
     else
-        echo "Installing ${arrayTargetPkg[$number]}"
+        unpack_tarball "${arrayTargetPkg[$number]}"
     fi
 fi
