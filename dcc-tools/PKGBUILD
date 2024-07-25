@@ -1,7 +1,7 @@
 pkgname=dcc-tools
 _pkgname=dcc-tools
 pkgver=1.0.0
-pkgrel=1
+pkgrel=2
 url='https://github.com/tvillega/${_pkgname}/tree/master'
 source=("${pkgname}-${pkgver}::git+https://github.com/tvillega/${_pkgname}.git")
 
@@ -12,5 +12,5 @@ build() {
 package() {
   cd "${srcdir}/${pkgname}-${pkgver}"
   install -Dm744 imprime  "${pkgdir}/${pkgname}/bin/imprime"
-  install -Dm744 sitioweb "${pkgdir}/${pkgname}bin/sitioweb"
+  install -Dm744 sitioweb "${pkgdir}/${pkgname}/bin/sitioweb"
 }
